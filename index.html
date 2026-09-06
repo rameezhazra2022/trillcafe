@@ -57,6 +57,13 @@ a{color:inherit;text-decoration:none}
   font-weight:700;letter-spacing:1.8px;text-transform:uppercase;
 }
 .navlinks{display:flex;gap:5px}
+.nav-order-label{font-size:10px;color:#8a8a8a;font-weight:700;letter-spacing:.15px;white-space:nowrap;margin-left:3px}
+.nav-order{height:34px;padding:3px 9px 3px 5px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-size:11px;font-weight:800;white-space:nowrap;background:#fff;transition:.18s;cursor:pointer}
+.nav-order svg{width:25px;height:25px;display:block;flex:0 0 25px}
+.nav-swiggy{border:1px solid #ffd0a8;color:#e96f10}
+.nav-swiggy:hover{background:#fff8f2;border-color:#f4a15e}
+.nav-zomato{border:1px solid #f3b0b7;color:#d92f3d}
+.nav-zomato:hover{background:#fff6f7;border-color:#e23744}
 .navlinks a{
   padding:9px 13px;border-radius:11px;font-size:13px;font-weight:800;color:#4e4e4e;
 }
@@ -238,7 +245,7 @@ model-viewer{
 /* ===== ZOMATO-STYLE RESTAURANT INFO & ACTIONS ===== */
 .restaurant-info{max-width:1180px;margin:0 auto;padding:18px 22px 4px}
 .restaurant-name-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.restaurant-cuisines{font-size:15px;color:#6f6f6f;line-height:1.55}
+.restaurant-cuisines{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:13px;color:#686868;line-height:1.55;letter-spacing:.1px}.restaurant-cuisines i{font-style:normal;color:#b3b3b3;font-size:10px}
 .restaurant-address{display:flex;align-items:flex-start;gap:8px;margin-top:3px;font-size:15px;color:#8a8a8a;line-height:1.55}
 .restaurant-address a{color:inherit;text-decoration:none}
 .restaurant-address a:hover{text-decoration:underline;color:#555}
@@ -300,7 +307,12 @@ model-viewer{
   .brand-mark{width:36px;height:36px}
   .brand{font-size:14px}
   .brand small{font-size:8px}
+  .navlinks{gap:5px;overflow-x:auto;scrollbar-width:none}
+  .navlinks::-webkit-scrollbar{display:none}
   .navlinks a{font-size:10px;padding:8px 7px}
+  .nav-order-label{font-size:9px}
+  .nav-order{height:31px;padding:2px 7px 2px 4px;font-size:10px}
+  .nav-order svg{width:23px;height:23px;flex-basis:23px}
   .container{padding:21px 12px 45px}
   .section-head{display:block}
   .section-head h1{font-size:29px}
@@ -336,12 +348,19 @@ model-viewer{
     <div class="navlinks">
       <a href="#ar">3D / AR</a>
       <a href="#menu">Menu</a>
+      <span class="nav-order-label">Order Online</span>
+      <button class="nav-order nav-swiggy" type="button" onclick="showOrderUnavailable('Swiggy')" aria-label="Swiggy ordering currently unavailable">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#FC8019"/><path d="M9 8.5h14c-1.1 2.2-2.6 4.1-4.7 5.7 3.3.4 5.2 1.8 5.2 4.5 0 3.2-3.1 5.1-7.4 5.1-3.1 0-5.5-1-7.1-2.6 2.1.6 4.1.7 5.7.2 1.5-.4 2.4-1.2 2.4-2.2 0-1.1-1-1.8-3-2.2-2.7-.5-4.3-1.6-4.3-3.4 0-1.7 1.3-3.6 3.2-5.1Z" fill="#fff"/></svg><span>Swiggy</span>
+      </button>
+      <a class="nav-order nav-zomato" href="https://www.zomato.com/kolkata/trill-3-baguihati" target="_blank" rel="noopener" aria-label="Order online via Zomato">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#E23744"/><path d="M8.5 10.2h14.2v3.1l-9.2 7.2h9.2v3.1H8.5v-3.1l9.2-7.2H8.5v-3.1Z" fill="#fff"/></svg><span>Zomato</span>
+      </a>
     </div>
   </nav>
 </header>
 
   <section class="restaurant-info" aria-label="Restaurant information">
-    <div class="restaurant-cuisines">North Indian, Mughlai, Seafood, Biryani, Continental, Chinese, Fast Food, Beverages</div>
+    <div class="restaurant-cuisines"><span>Indian</span><i>•</i><span>Mughlai</span><i>•</i><span>Seafood</span><i>•</i><span>Biryani</span><i>•</i><span>Continental</span><i>•</i><span>Chinese</span><i>•</i><span>Quick Bites</span><i>•</i><span>Beverages</span></div>
     <div class="restaurant-address">
       <svg class="info-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5a7 7 0 0 0-7 7c0 5.1 7 12 7 12s7-6.9 7-12a7 7 0 0 0-7-7Zm0 9.7a2.7 2.7 0 1 1 0-5.4 2.7 2.7 0 0 1 0 5.4Z"/></svg>
       <a href="https://www.google.com/maps/search/?api=1&query=Shop+G-4+%26+G-5%2C+Ground+Floor%2C+Holding+AS%2F270%2FF%2C+Swapnil+Apartment%2C+Rajarhat+Road%2C+Baguihati%2C+Kolkata" target="_blank" rel="noopener">Shop G-4 &amp; G-5, Ground Floor, Holding AS/270/F, Swapnil Apartment, Rajarhat Road, Baguihati, Kolkata</a>
@@ -366,12 +385,6 @@ model-viewer{
       <button class="action-item save-item" id="saveCafeBtn" type="button" onclick="toggleSaveCafe()" aria-label="Save Trill's Cafe">
         <svg class="action-icon save-icon" id="saveCafeIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3.2-5.5 3.2v-15Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="action-label" id="saveCafeLabel">Save</span>
       </button>
-      <span class="order-label order-label-inline">Order Online via</span>
-      <button class="action-item order-item swiggy" type="button" onclick="showOrderUnavailable('Swiggy')" aria-label="Swiggy ordering currently unavailable">
-        <svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#FC8019"/><path d="M9 8.5h14c-1.1 2.2-2.6 4.1-4.7 5.7 3.3.4 5.2 1.8 5.2 4.5 0 3.2-3.1 5.1-7.4 5.1-3.1 0-5.5-1-7.1-2.6 2.1.6 4.1.7 5.7.2 1.5-.4 2.4-1.2 2.4-2.2 0-1.1-1-1.8-3-2.2-2.7-.5-4.3-1.6-4.3-3.4 0-1.7 1.3-3.6 3.2-5.1Z" fill="#fff"/></svg><span class="action-label">Swiggy</span>
-      </button>
-      <a class="action-item order-item zomato" href="https://www.zomato.com/kolkata/trill-3-baguihati" target="_blank" rel="noopener" aria-label="Order online via Zomato">
-        <svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#E23744"/><path d="M8.5 10.2h14.2v3.1l-9.2 7.2h9.2v3.1H8.5v-3.1l9.2-7.2H8.5v-3.1Z" fill="#fff"/></svg><span class="action-label">Zomato</span>
       </a>
     </div>
   </div>

@@ -234,6 +234,28 @@ model-viewer{
   text-align:center;color:#8a8a8a;font-size:10px;letter-spacing:.6px;
 }
 
+
+/* ===== PROFESSIONAL ACTION BAR ===== */
+.action-area{max-width:1180px;margin:0 auto;padding:0 22px 4px}
+.action-bar{display:flex;align-items:stretch;justify-content:center;gap:7px;flex-wrap:wrap;padding:10px 0 12px}
+.action-group{display:flex;align-items:stretch;gap:6px}
+.action-divider{width:1px;background:var(--line);margin:5px 3px}
+.action-item{min-width:66px;min-height:58px;padding:7px 9px;border:1px solid #e7e1d7;border-radius:14px;background:rgba(255,253,249,.9);color:#303030;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;box-shadow:0 5px 18px rgba(23,23,23,.045);transition:transform .18s,box-shadow .18s,border-color .18s,background .18s}
+.action-item:hover{transform:translateY(-2px);box-shadow:0 9px 24px rgba(23,23,23,.09);border-color:#d9ccb9;background:#fff}
+.action-item:active{transform:translateY(0) scale(.98)}
+.action-icon{width:23px;height:23px;display:grid;place-items:center;font-size:20px;line-height:1;font-weight:800}
+.action-label{font-size:9px;font-weight:900;letter-spacing:.45px;text-transform:uppercase}
+.action-sub{font-size:8px;color:#777;font-weight:700;white-space:nowrap}
+.order-label{display:flex;align-items:center;justify-content:center;padding:0 5px;color:#8d682e;font-size:9px;font-weight:900;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+.order-item{min-width:78px}.order-item.swiggy{border-color:#eadbc1}.order-item.zomato{border-color:#ead8d8}
+.action-icon.swiggy-icon{font-size:16px}.action-icon.zomato-icon{font-size:15px;font-weight:950}
+.action-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,18px);z-index:200;opacity:0;pointer-events:none;background:#171717;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 12px 35px rgba(0,0,0,.25);font-size:11px;font-weight:800;text-align:center;max-width:min(360px,88vw);transition:opacity .22s,transform .22s}
+.action-toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:600px){
+ .action-area{padding:0 8px 3px}.action-bar{gap:5px;padding:7px 0 9px;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;scrollbar-width:none}.action-bar::-webkit-scrollbar{display:none}
+ .action-divider{margin:5px 1px;flex:none}.action-item{min-width:58px;min-height:54px;padding:6px 7px;border-radius:12px}.action-icon{width:21px;height:21px;font-size:18px}.action-label{font-size:8px}.action-sub{font-size:7px}.order-label{font-size:8px;padding:0 2px}.order-item{min-width:70px}
+}
+
 /* ===== RESPONSIVE ===== */
 @media(max-width:900px){
   .menu-grid{grid-template-columns:repeat(3,1fr)}
@@ -287,6 +309,42 @@ model-viewer{
   </nav>
 </header>
 
+  <div class="action-area">
+    <div class="action-bar" aria-label="Restaurant quick actions">
+      <div class="action-group">
+        <a class="action-item" href="tel:+918910919661" aria-label="Call Trill's Cafe">
+          <span class="action-icon">☎</span><span class="action-label">Call</span><span class="action-sub">+91 89109 19661</span>
+        </a>
+        <a class="action-item" href="https://www.google.com/maps/search/?api=1&query=Shop+G-4+%26+G-5%2C+Ground+Floor%2C+Holding+AS%2F270%2FF%2C+Swapnil+Apartment%2C+Rajarhat+Road%2C+Baguihati%2C+Kolkata" target="_blank" rel="noopener" aria-label="Open restaurant address in Google Maps">
+          <span class="action-icon">⌖</span><span class="action-label">Address</span>
+        </a>
+        <a class="action-item" href="https://www.google.com/maps/dir/?api=1&destination=Shop+G-4+%26+G-5%2C+Ground+Floor%2C+Holding+AS%2F270%2FF%2C+Swapnil+Apartment%2C+Rajarhat+Road%2C+Baguihati%2C+Kolkata" target="_blank" rel="noopener" aria-label="Get directions to Trill's Cafe">
+          <span class="action-icon">➤</span><span class="action-label">Directions</span>
+        </a>
+        <a class="action-item" href="https://wa.me/918910919661" target="_blank" rel="noopener" aria-label="Chat with Trill's Cafe on WhatsApp">
+          <span class="action-icon">◔</span><span class="action-label">WhatsApp</span>
+        </a>
+        <button class="action-item" type="button" onclick="shareCafe()" aria-label="Share Trill's Cafe">
+          <span class="action-icon">↗</span><span class="action-label">Share</span>
+        </button>
+        <button class="action-item" id="saveCafeBtn" type="button" onclick="toggleSaveCafe()" aria-label="Save Trill's Cafe">
+          <span class="action-icon" id="saveCafeIcon">♡</span><span class="action-label" id="saveCafeLabel">Save</span>
+        </button>
+      </div>
+      <span class="action-divider" aria-hidden="true"></span>
+      <div class="action-group">
+        <span class="order-label">Order Online via</span>
+        <button class="action-item order-item swiggy" type="button" onclick="showOrderUnavailable('Swiggy')" aria-label="Swiggy ordering currently unavailable">
+          <span class="action-icon swiggy-icon">S</span><span class="action-label">Swiggy</span>
+        </button>
+        <a class="action-item order-item zomato" href="https://www.zomato.com/kolkata/trill-3-baguihati" target="_blank" rel="noopener" aria-label="Order online via Zomato">
+          <span class="action-icon zomato-icon">Z</span><span class="action-label">Zomato</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+
 <main class="container">
 
 <section id="ar" class="ar-section">
@@ -328,6 +386,8 @@ model-viewer{
 <div class="footer">TRILL'S • DIGITAL MENU • 3D / AR EXPERIENCE</div>
 </main>
 
+<div class="action-toast" id="actionToast" role="status" aria-live="polite"></div>
+
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Menu page viewer">
   <button class="close" onclick="closeLightbox()" aria-label="Close">×</button>
   <button class="lbnav lbprev" onclick="changePage(-1)" aria-label="Previous page">‹</button>
@@ -336,6 +396,35 @@ model-viewer{
 </div>
 
 <script>
+
+/* ===== PROFESSIONAL ACTION BAR ===== */
+const cafeShareUrl=window.location.href.split("#")[0];
+function showActionToast(message){
+ const toast=document.getElementById("actionToast"); if(!toast)return;
+ toast.textContent=message; toast.classList.add("show"); clearTimeout(window._actionToastTimer);
+ window._actionToastTimer=setTimeout(()=>toast.classList.remove("show"),2600);
+}
+async function shareCafe(){
+ try{
+  if(navigator.share){await navigator.share({title:"Trill's Cafe — Digital Menu & AR",text:"Explore Trill's Cafe digital menu and 3D / AR experience.",url:cafeShareUrl});}
+  else if(navigator.clipboard){await navigator.clipboard.writeText(cafeShareUrl);showActionToast("Menu link copied — ready to share.");}
+  else{prompt("Copy this menu link:",cafeShareUrl);}
+ }catch(err){if(err&&err.name!=="AbortError")showActionToast("Unable to open sharing.");}
+}
+function toggleSaveCafe(){
+ const saved=localStorage.getItem("trillsCafeSaved")==="true"; const next=!saved;
+ localStorage.setItem("trillsCafeSaved",String(next)); updateSaveButton(next);
+ showActionToast(next?"Trill's Cafe saved.":"Removed from saved places.");
+}
+function updateSaveButton(saved){
+ const icon=document.getElementById("saveCafeIcon"),label=document.getElementById("saveCafeLabel"),btn=document.getElementById("saveCafeBtn");
+ if(!icon||!label||!btn)return; icon.textContent=saved?"♥":"♡"; label.textContent=saved?"Saved":"Save";
+ btn.setAttribute("aria-label",saved?"Remove Trill's Cafe from saved places":"Save Trill's Cafe");
+}
+function showOrderUnavailable(service){
+ showActionToast(`${service} ordering is currently unavailable. Please try Zomato or contact the restaurant directly.`);
+}
+document.addEventListener("DOMContentLoaded",()=>updateSaveButton(localStorage.getItem("trillsCafeSaved")==="true"));
 /*
   ==========================================================
   AR MODEL CONFIGURATION

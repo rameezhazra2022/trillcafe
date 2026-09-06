@@ -243,11 +243,7 @@ model-viewer{
 .restaurant-address a{color:inherit;text-decoration:none}
 .restaurant-address a:hover{text-decoration:underline;color:#555}
 .info-icon{width:19px;height:19px;flex:0 0 19px;margin-top:2px;color:#777}
-.restaurant-meta{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:7px;color:#777;font-size:14px}
-.meta-sep{color:#b5b5b5}
-.open-pill{border:1px solid #aaa;border-radius:18px;padding:5px 11px;color:#666;background:#fff;white-space:nowrap}
-.open-pill strong{color:#f25b4f;font-weight:600}
-.call-wrap{display:inline-flex;align-items:center;gap:7px}
+.call-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:7px;color:#777;font-size:14px}
 .call-button{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid #ddd;border-radius:17px;background:#fff;color:#444;text-decoration:none;font-weight:600}
 .call-button:hover{border-color:#cfcfcf;background:#fafafa}
 .call-number{color:#6d6d6d;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
@@ -262,6 +258,7 @@ model-viewer{
 .action-label{font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;white-space:nowrap}
 .action-sub{font-size:11px;color:#777;font-weight:600;white-space:nowrap}
 .action-divider{width:1px;height:28px;background:#ddd;margin:0 2px}
+.order-label-inline{margin-left:4px}
 .order-label{display:inline-flex;align-items:center;color:#777;font-size:13px;font-weight:600;white-space:nowrap;margin-left:2px}
 .order-item{min-height:44px;min-width:94px;padding:6px 11px}
 .order-item .action-label{font-weight:700}
@@ -279,15 +276,13 @@ model-viewer{
 @media(max-width:600px){
  .restaurant-info{padding:13px 14px 3px}
  .restaurant-cuisines,.restaurant-address{font-size:13px}
- .restaurant-meta{font-size:12px;gap:7px}
- .open-pill{padding:4px 9px}
  .action-area{padding:6px 14px 8px}
  .action-bar{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
  .action-bar::-webkit-scrollbar{display:none}
  .action-group{flex-wrap:nowrap}
  .action-item{min-height:42px;padding:8px 11px;border-radius:9px}
  .action-label{font-size:13px}
- .order-label{font-size:12px}
+ .order-label{font-size:12px;white-space:nowrap}
  .order-item{min-width:88px}
  .action-divider{height:25px;flex:none}
 }
@@ -351,44 +346,33 @@ model-viewer{
       <svg class="info-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5a7 7 0 0 0-7 7c0 5.1 7 12 7 12s7-6.9 7-12a7 7 0 0 0-7-7Zm0 9.7a2.7 2.7 0 1 1 0-5.4 2.7 2.7 0 0 1 0 5.4Z"/></svg>
       <a href="https://www.google.com/maps/search/?api=1&query=Shop+G-4+%26+G-5%2C+Ground+Floor%2C+Holding+AS%2F270%2FF%2C+Swapnil+Apartment%2C+Rajarhat+Road%2C+Baguihati%2C+Kolkata" target="_blank" rel="noopener">Shop G-4 &amp; G-5, Ground Floor, Holding AS/270/F, Swapnil Apartment, Rajarhat Road, Baguihati, Kolkata</a>
     </div>
-    <div class="restaurant-meta">
-      <span class="open-pill"><strong>Open now</strong>&nbsp;&nbsp;•&nbsp;&nbsp;11am – 11pm (Today)</span>
-      <span class="meta-sep">|</span>
-      <span>Rs.1,000 for two</span>
-      <span class="meta-sep">|</span>
-      <span class="call-wrap">
-        <a class="call-button" href="tel:+918910919661" aria-label="Call Trill's Cafe"><svg class="call-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 2.5 9.4 2l2 4.7-2.1 1.7a15.7 15.7 0 0 0 6.3 6.3l1.7-2.1 4.7 2-.5 2.8c-.3 1.5-1.6 2.6-3.1 2.6C10.9 20 4 13.1 4 4.6c0-1.5 1.1-2.8 2.6-3.1Z"/></svg><span>Call</span></a>
-        <a class="call-number" href="tel:+918910919661">+91 89109 19661</a>
-      </span>
+    <div class="call-line">
+      <a class="call-button" href="tel:+918910919661" aria-label="Call Trill's Cafe"><svg class="call-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 2.5 9.4 2l2 4.7-2.1 1.7a15.7 15.7 0 0 0 6.3 6.3l1.7-2.1 4.7 2-.5 2.8c-.3 1.5-1.6 2.6-3.1 2.6C10.9 20 4 13.1 4 4.6c0-1.5 1.1-2.8 2.6-3.1Z"/></svg><span>Call</span></a>
+      <a class="call-number" href="tel:+918910919661">+91 89109 19661</a>
     </div>
   </section>
 
   <div class="action-area">
     <div class="action-bar" aria-label="Restaurant quick actions">
-      <div class="action-group">
-        <a class="action-item" href="https://www.google.com/maps/dir/?api=1&destination=Shop+G-4+%26+G-5%2C+Ground+Floor%2C+Holding+AS%2F270%2FF%2C+Swapnil+Apartment%2C+Rajarhat+Road%2C+Baguihati%2C+Kolkata" target="_blank" rel="noopener" aria-label="Get directions to Trill's Cafe">
-          <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m3 11.5 18-8-8 18-2.6-7.4L3 11.5Zm8.3.8 3.7-3.7-5 2.2 1.3 1.5Z"/></svg><span class="action-label">Directions</span>
-        </a>
-        <a class="action-item" href="https://wa.me/918910919661" target="_blank" rel="noopener" aria-label="Chat with Trill's Cafe on WhatsApp">
-          <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#25D366" d="M12 2.5a9.3 9.3 0 0 0-8 14l-1.2 4.1 4.2-1.2A9.5 9.5 0 1 0 12 2.5Zm0 16.7a7.2 7.2 0 0 1-3.7-1l-.3-.2-2.5.7.7-2.4-.2-.3a7.2 7.2 0 1 1 6 3.2Zm4-5.3c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1-.1.2-.5.7-.6.8-.1.2-.2.2-.4.1-1.1-.5-1.8-1-2.5-2-.2-.3.2-.3.5-1 .1-.2.1-.3 0-.4l-.7-1.6c-.2-.4-.4-.4-.5-.4h-.4c-.2 0-.4.1-.6.3-.2.2-.7.7-.7 1.7s.7 2  .8 2.1c.1.1 1.4 2.2 3.5 3 .5.2.9.3 1.2.4.5.2 1 .1 1.4.1.4-.1 1.2-.5 1.3-1 .2-.5.2-.9.1-1-.1-.1-.2-.1-.4-.2Z"/></svg><span class="action-label">WhatsApp</span>
-        </a>
-        <button class="action-item" type="button" onclick="shareCafe()" aria-label="Share Trill's Cafe">
-          <svg class="action-icon share-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8 11 7.8-4.5M8 13l7.8 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="action-label">Share</span>
-        </button>
-        <button class="action-item save-item" id="saveCafeBtn" type="button" onclick="toggleSaveCafe()" aria-label="Save Trill's Cafe">
-          <svg class="action-icon save-icon" id="saveCafeIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3.2-5.5 3.2v-15Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="action-label" id="saveCafeLabel">Save</span>
-        </button>
-      </div>
-      <span class="action-divider" aria-hidden="true"></span>
-      <div class="action-group">
-        <span class="order-label">Order Online via</span>
-        <button class="action-item order-item swiggy" type="button" onclick="showOrderUnavailable('Swiggy')" aria-label="Swiggy ordering currently unavailable">
-          <svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#FC8019"/><path d="M9 8.5h14c-1.1 2.2-2.6 4.1-4.7 5.7 3.3.4 5.2 1.8 5.2 4.5 0 3.2-3.1 5.1-7.4 5.1-3.1 0-5.5-1-7.1-2.6 2.1.6 4.1.7 5.7.2 1.5-.4 2.4-1.2 2.4-2.2 0-1.1-1-1.8-3-2.2-2.7-.5-4.3-1.6-4.3-3.4 0-1.7 1.3-3.6 3.2-5.1Z" fill="#fff"/></svg><span class="action-label">Swiggy</span>
-        </button>
-        <a class="action-item order-item zomato" href="https://www.zomato.com/kolkata/trill-3-baguihati" target="_blank" rel="noopener" aria-label="Order online via Zomato">
-          <svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#E23744"/><path d="M8.5 10.2h14.2v3.1l-9.2 7.2h9.2v3.1H8.5v-3.1l9.2-7.2H8.5v-3.1Z" fill="#fff"/></svg><span class="action-label">Zomato</span>
-        </a>
-      </div>
+      <a class="action-item" href="https://www.google.com/maps/dir/?api=1&destination=Shop+G-4+%26+G-5%2C+Ground+Floor%2C+Holding+AS%2F270%2FF%2C+Swapnil+Apartment%2C+Rajarhat+Road%2C+Baguihati%2C+Kolkata" target="_blank" rel="noopener" aria-label="Get directions to Trill's Cafe">
+        <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m3 11.5 18-8-8 18-2.6-7.4L3 11.5Zm8.3.8 3.7-3.7-5 2.2 1.3 1.5Z"/></svg><span class="action-label">Directions</span>
+      </a>
+      <a class="action-item" href="https://wa.me/918910919661" target="_blank" rel="noopener" aria-label="Chat with Trill's Cafe on WhatsApp">
+        <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#25D366" d="M12 2.5a9.3 9.3 0 0 0-8 14l-1.2 4.1 4.2-1.2A9.5 9.5 0 1 0 12 2.5Zm0 16.7a7.2 7.2 0 0 1-3.7-1l-.3-.2-2.5.7.7-2.4-.2-.3a7.2 7.2 0 1 1 6 3.2Zm4-5.3c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1-.1.2-.5.7-.6.8-.1.2-.2.2-.4.1-1.1-.5-1.8-1-2.5-2-.2-.3.2-.3.5-1 .1-.2.1-.3 0-.4l-.7-1.6c-.2-.4-.4-.4-.5-.4h-.4c-.2 0-.4.1-.6.3-.2.2-.7.7-.7 1.7s.7 2 .8 2.1c.1.1 1.4 2.2 3.5 3 .5.2.9.3 1.2.4.5.2 1 .1 1.4.1.4-.1 1.2-.5 1.3-1 .2-.5.2-.9.1-1-.1-.1-.2-.1-.4-.2Z"/></svg><span class="action-label">WhatsApp</span>
+      </a>
+      <button class="action-item" type="button" onclick="shareCafe()" aria-label="Share Trill's Cafe">
+        <svg class="action-icon share-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8 11 7.8-4.5M8 13l7.8 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="action-label">Share</span>
+      </button>
+      <button class="action-item save-item" id="saveCafeBtn" type="button" onclick="toggleSaveCafe()" aria-label="Save Trill's Cafe">
+        <svg class="action-icon save-icon" id="saveCafeIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3.2-5.5 3.2v-15Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="action-label" id="saveCafeLabel">Save</span>
+      </button>
+      <span class="order-label order-label-inline">Order Online via</span>
+      <button class="action-item order-item swiggy" type="button" onclick="showOrderUnavailable('Swiggy')" aria-label="Swiggy ordering currently unavailable">
+        <svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#FC8019"/><path d="M9 8.5h14c-1.1 2.2-2.6 4.1-4.7 5.7 3.3.4 5.2 1.8 5.2 4.5 0 3.2-3.1 5.1-7.4 5.1-3.1 0-5.5-1-7.1-2.6 2.1.6 4.1.7 5.7.2 1.5-.4 2.4-1.2 2.4-2.2 0-1.1-1-1.8-3-2.2-2.7-.5-4.3-1.6-4.3-3.4 0-1.7 1.3-3.6 3.2-5.1Z" fill="#fff"/></svg><span class="action-label">Swiggy</span>
+      </button>
+      <a class="action-item order-item zomato" href="https://www.zomato.com/kolkata/trill-3-baguihati" target="_blank" rel="noopener" aria-label="Order online via Zomato">
+        <svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#E23744"/><path d="M8.5 10.2h14.2v3.1l-9.2 7.2h9.2v3.1H8.5v-3.1l9.2-7.2H8.5v-3.1Z" fill="#fff"/></svg><span class="action-label">Zomato</span>
+      </a>
     </div>
   </div>
 

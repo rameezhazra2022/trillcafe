@@ -235,25 +235,61 @@ model-viewer{
 }
 
 
-/* ===== PROFESSIONAL ACTION BAR ===== */
-.action-area{max-width:1180px;margin:0 auto;padding:0 22px 4px}
-.action-bar{display:flex;align-items:stretch;justify-content:center;gap:7px;flex-wrap:wrap;padding:10px 0 12px}
-.action-group{display:flex;align-items:stretch;gap:6px}
-.action-divider{width:1px;background:var(--line);margin:5px 3px}
-.action-item{min-width:66px;min-height:58px;padding:7px 9px;border:1px solid #e7e1d7;border-radius:14px;background:rgba(255,253,249,.9);color:#303030;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;box-shadow:0 5px 18px rgba(23,23,23,.045);transition:transform .18s,box-shadow .18s,border-color .18s,background .18s}
-.action-item:hover{transform:translateY(-2px);box-shadow:0 9px 24px rgba(23,23,23,.09);border-color:#d9ccb9;background:#fff}
-.action-item:active{transform:translateY(0) scale(.98)}
-.action-icon{width:23px;height:23px;display:grid;place-items:center;font-size:20px;line-height:1;font-weight:800}
-.action-label{font-size:9px;font-weight:900;letter-spacing:.45px;text-transform:uppercase}
-.action-sub{font-size:8px;color:#777;font-weight:700;white-space:nowrap}
-.order-label{display:flex;align-items:center;justify-content:center;padding:0 5px;color:#8d682e;font-size:9px;font-weight:900;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
-.order-item{min-width:78px}.order-item.swiggy{border-color:#eadbc1}.order-item.zomato{border-color:#ead8d8}
-.action-icon.swiggy-icon{font-size:16px}.action-icon.zomato-icon{font-size:15px;font-weight:950}
+/* ===== ZOMATO-STYLE RESTAURANT INFO & ACTIONS ===== */
+.restaurant-info{max-width:1180px;margin:0 auto;padding:18px 22px 4px}
+.restaurant-name-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.restaurant-cuisines{font-size:15px;color:#6f6f6f;line-height:1.55}
+.restaurant-address{display:flex;align-items:flex-start;gap:8px;margin-top:3px;font-size:15px;color:#8a8a8a;line-height:1.55}
+.restaurant-address a{color:inherit;text-decoration:none}
+.restaurant-address a:hover{text-decoration:underline;color:#555}
+.info-icon{width:19px;height:19px;flex:0 0 19px;margin-top:2px;color:#777}
+.restaurant-meta{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:7px;color:#777;font-size:14px}
+.meta-sep{color:#b5b5b5}
+.open-pill{border:1px solid #aaa;border-radius:18px;padding:5px 11px;color:#666;background:#fff;white-space:nowrap}
+.open-pill strong{color:#f25b4f;font-weight:600}
+.call-wrap{display:inline-flex;align-items:center;gap:7px}
+.call-button{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid #ddd;border-radius:17px;background:#fff;color:#444;text-decoration:none;font-weight:600}
+.call-button:hover{border-color:#cfcfcf;background:#fafafa}
+.call-number{color:#6d6d6d;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
+.call-icon{width:18px;height:18px;color:#ef5260}
+.action-area{max-width:1180px;margin:0 auto;padding:8px 22px 8px}
+.action-bar{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.action-group{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.action-item{min-height:44px;padding:8px 13px;border:1px solid #cfcfcf;border-radius:9px;background:#fff;color:#333;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-align:center;text-decoration:none;box-shadow:none;transition:background .18s,border-color .18s,transform .18s}
+.action-item:hover{background:#fafafa;border-color:#aaa;transform:translateY(-1px)}
+.action-item:active{transform:translateY(0)}
+.action-icon{width:20px;height:20px;display:grid;place-items:center;line-height:1;font-weight:800}
+.action-label{font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;white-space:nowrap}
+.action-sub{font-size:11px;color:#777;font-weight:600;white-space:nowrap}
+.action-divider{width:1px;height:28px;background:#ddd;margin:0 2px}
+.order-label{display:inline-flex;align-items:center;color:#777;font-size:13px;font-weight:600;white-space:nowrap;margin-left:2px}
+.order-item{min-height:44px;min-width:94px;padding:6px 11px}
+.order-item .action-label{font-weight:700}
+.order-item.swiggy{border-color:#ffb06d;color:#f47b20}
+.order-item.swiggy:hover{background:#fff8f2;border-color:#f47b20}
+.order-item.zomato{border-color:#f2a4ad;color:#e23744}
+.order-item.zomato:hover{background:#fff6f7;border-color:#e23744}
+.brand-icon{width:24px;height:24px;display:block;flex:0 0 24px}
+.share-icon{color:#555}
+.save-icon{color:#555}
+.save-item.saved{border-color:#c98d8d;background:#fff8f8}
+.save-item.saved .save-icon{color:#e23744}
 .action-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,18px);z-index:200;opacity:0;pointer-events:none;background:#171717;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 12px 35px rgba(0,0,0,.25);font-size:11px;font-weight:800;text-align:center;max-width:min(360px,88vw);transition:opacity .22s,transform .22s}
 .action-toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:600px){
- .action-area{padding:0 8px 3px}.action-bar{gap:5px;padding:7px 0 9px;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;scrollbar-width:none}.action-bar::-webkit-scrollbar{display:none}
- .action-divider{margin:5px 1px;flex:none}.action-item{min-width:58px;min-height:54px;padding:6px 7px;border-radius:12px}.action-icon{width:21px;height:21px;font-size:18px}.action-label{font-size:8px}.action-sub{font-size:7px}.order-label{font-size:8px;padding:0 2px}.order-item{min-width:70px}
+ .restaurant-info{padding:13px 14px 3px}
+ .restaurant-cuisines,.restaurant-address{font-size:13px}
+ .restaurant-meta{font-size:12px;gap:7px}
+ .open-pill{padding:4px 9px}
+ .action-area{padding:6px 14px 8px}
+ .action-bar{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+ .action-bar::-webkit-scrollbar{display:none}
+ .action-group{flex-wrap:nowrap}
+ .action-item{min-height:42px;padding:8px 11px;border-radius:9px}
+ .action-label{font-size:13px}
+ .order-label{font-size:12px}
+ .order-item{min-width:88px}
+ .action-divider{height:25px;flex:none}
 }
 
 /* ===== RESPONSIVE ===== */
@@ -309,41 +345,52 @@ model-viewer{
   </nav>
 </header>
 
+  <section class="restaurant-info" aria-label="Restaurant information">
+    <div class="restaurant-cuisines">North Indian, Mughlai, Seafood, Biryani, Continental, Chinese, Fast Food, Beverages</div>
+    <div class="restaurant-address">
+      <svg class="info-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5a7 7 0 0 0-7 7c0 5.1 7 12 7 12s7-6.9 7-12a7 7 0 0 0-7-7Zm0 9.7a2.7 2.7 0 1 1 0-5.4 2.7 2.7 0 0 1 0 5.4Z"/></svg>
+      <a href="https://www.google.com/maps/search/?api=1&query=Shop+G-4+%26+G-5%2C+Ground+Floor%2C+Holding+AS%2F270%2FF%2C+Swapnil+Apartment%2C+Rajarhat+Road%2C+Baguihati%2C+Kolkata" target="_blank" rel="noopener">Shop G-4 &amp; G-5, Ground Floor, Holding AS/270/F, Swapnil Apartment, Rajarhat Road, Baguihati, Kolkata</a>
+    </div>
+    <div class="restaurant-meta">
+      <span class="open-pill"><strong>Open now</strong>&nbsp;&nbsp;•&nbsp;&nbsp;11am – 11pm (Today)</span>
+      <span class="meta-sep">|</span>
+      <span>Rs.1,000 for two</span>
+      <span class="meta-sep">|</span>
+      <span class="call-wrap">
+        <a class="call-button" href="tel:+918910919661" aria-label="Call Trill's Cafe"><svg class="call-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 2.5 9.4 2l2 4.7-2.1 1.7a15.7 15.7 0 0 0 6.3 6.3l1.7-2.1 4.7 2-.5 2.8c-.3 1.5-1.6 2.6-3.1 2.6C10.9 20 4 13.1 4 4.6c0-1.5 1.1-2.8 2.6-3.1Z"/></svg><span>Call</span></a>
+        <a class="call-number" href="tel:+918910919661">+91 89109 19661</a>
+      </span>
+    </div>
+  </section>
+
   <div class="action-area">
     <div class="action-bar" aria-label="Restaurant quick actions">
       <div class="action-group">
-        <a class="action-item" href="tel:+918910919661" aria-label="Call Trill's Cafe">
-          <span class="action-icon">☎</span><span class="action-label">Call</span><span class="action-sub">+91 89109 19661</span>
-        </a>
-        <a class="action-item" href="https://www.google.com/maps/search/?api=1&query=Shop+G-4+%26+G-5%2C+Ground+Floor%2C+Holding+AS%2F270%2FF%2C+Swapnil+Apartment%2C+Rajarhat+Road%2C+Baguihati%2C+Kolkata" target="_blank" rel="noopener" aria-label="Open restaurant address in Google Maps">
-          <span class="action-icon">⌖</span><span class="action-label">Address</span>
-        </a>
         <a class="action-item" href="https://www.google.com/maps/dir/?api=1&destination=Shop+G-4+%26+G-5%2C+Ground+Floor%2C+Holding+AS%2F270%2FF%2C+Swapnil+Apartment%2C+Rajarhat+Road%2C+Baguihati%2C+Kolkata" target="_blank" rel="noopener" aria-label="Get directions to Trill's Cafe">
-          <span class="action-icon">➤</span><span class="action-label">Directions</span>
+          <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m3 11.5 18-8-8 18-2.6-7.4L3 11.5Zm8.3.8 3.7-3.7-5 2.2 1.3 1.5Z"/></svg><span class="action-label">Directions</span>
         </a>
         <a class="action-item" href="https://wa.me/918910919661" target="_blank" rel="noopener" aria-label="Chat with Trill's Cafe on WhatsApp">
-          <span class="action-icon">◔</span><span class="action-label">WhatsApp</span>
+          <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#25D366" d="M12 2.5a9.3 9.3 0 0 0-8 14l-1.2 4.1 4.2-1.2A9.5 9.5 0 1 0 12 2.5Zm0 16.7a7.2 7.2 0 0 1-3.7-1l-.3-.2-2.5.7.7-2.4-.2-.3a7.2 7.2 0 1 1 6 3.2Zm4-5.3c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1-.1.2-.5.7-.6.8-.1.2-.2.2-.4.1-1.1-.5-1.8-1-2.5-2-.2-.3.2-.3.5-1 .1-.2.1-.3 0-.4l-.7-1.6c-.2-.4-.4-.4-.5-.4h-.4c-.2 0-.4.1-.6.3-.2.2-.7.7-.7 1.7s.7 2  .8 2.1c.1.1 1.4 2.2 3.5 3 .5.2.9.3 1.2.4.5.2 1 .1 1.4.1.4-.1 1.2-.5 1.3-1 .2-.5.2-.9.1-1-.1-.1-.2-.1-.4-.2Z"/></svg><span class="action-label">WhatsApp</span>
         </a>
         <button class="action-item" type="button" onclick="shareCafe()" aria-label="Share Trill's Cafe">
-          <span class="action-icon">↗</span><span class="action-label">Share</span>
+          <svg class="action-icon share-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8 11 7.8-4.5M8 13l7.8 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="action-label">Share</span>
         </button>
-        <button class="action-item" id="saveCafeBtn" type="button" onclick="toggleSaveCafe()" aria-label="Save Trill's Cafe">
-          <span class="action-icon" id="saveCafeIcon">♡</span><span class="action-label" id="saveCafeLabel">Save</span>
+        <button class="action-item save-item" id="saveCafeBtn" type="button" onclick="toggleSaveCafe()" aria-label="Save Trill's Cafe">
+          <svg class="action-icon save-icon" id="saveCafeIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3.2-5.5 3.2v-15Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="action-label" id="saveCafeLabel">Save</span>
         </button>
       </div>
       <span class="action-divider" aria-hidden="true"></span>
       <div class="action-group">
         <span class="order-label">Order Online via</span>
         <button class="action-item order-item swiggy" type="button" onclick="showOrderUnavailable('Swiggy')" aria-label="Swiggy ordering currently unavailable">
-          <span class="action-icon swiggy-icon">S</span><span class="action-label">Swiggy</span>
+          <svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#FC8019"/><path d="M9 8.5h14c-1.1 2.2-2.6 4.1-4.7 5.7 3.3.4 5.2 1.8 5.2 4.5 0 3.2-3.1 5.1-7.4 5.1-3.1 0-5.5-1-7.1-2.6 2.1.6 4.1.7 5.7.2 1.5-.4 2.4-1.2 2.4-2.2 0-1.1-1-1.8-3-2.2-2.7-.5-4.3-1.6-4.3-3.4 0-1.7 1.3-3.6 3.2-5.1Z" fill="#fff"/></svg><span class="action-label">Swiggy</span>
         </button>
         <a class="action-item order-item zomato" href="https://www.zomato.com/kolkata/trill-3-baguihati" target="_blank" rel="noopener" aria-label="Order online via Zomato">
-          <span class="action-icon zomato-icon">Z</span><span class="action-label">Zomato</span>
+          <svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#E23744"/><path d="M8.5 10.2h14.2v3.1l-9.2 7.2h9.2v3.1H8.5v-3.1l9.2-7.2H8.5v-3.1Z" fill="#fff"/></svg><span class="action-label">Zomato</span>
         </a>
       </div>
     </div>
   </div>
-
 
 <main class="container">
 
@@ -418,7 +465,10 @@ function toggleSaveCafe(){
 }
 function updateSaveButton(saved){
  const icon=document.getElementById("saveCafeIcon"),label=document.getElementById("saveCafeLabel"),btn=document.getElementById("saveCafeBtn");
- if(!icon||!label||!btn)return; icon.textContent=saved?"♥":"♡"; label.textContent=saved?"Saved":"Save";
+ if(!icon||!label||!btn)return;
+ icon.innerHTML=saved?'<path d="M6.5 4.5h11v15l-5.5-3.2-5.5 3.2v-15Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>':'<path d="M6.5 4.5h11v15l-5.5-3.2-5.5 3.2v-15Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>';
+ label.textContent=saved?"Saved":"Save";
+ btn.classList.toggle("saved",saved);
  btn.setAttribute("aria-label",saved?"Remove Trill's Cafe from saved places":"Save Trill's Cafe");
 }
 function showOrderUnavailable(service){

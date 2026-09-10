@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PLATE³ — Digital Menus for Modern Restaurants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+<style>
+:root{
+ --orange:#ff6b00;--orange2:#ff8d26;--cream:#f4eadc;--paper:#fffaf3;
+ --ink:#111827;--muted:#667085;--dark:#090807;--brown:#21130c;
+ --line:#dfd3c4;--white:#fff;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif;color:var(--ink);background:var(--cream)}
+button,input{font:inherit}.container{width:min(1450px,94vw);margin:auto}
+.nav{height:68px;background:rgba(7,7,7,.96);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 3.2vw;position:sticky;top:0;z-index:20;border-bottom:1px solid #252525}
+.brand{display:flex;align-items:center;gap:12px;font-weight:900;font-size:23px;letter-spacing:-1px}.brand img{width:58px;height:58px;object-fit:contain}.brand sup{color:var(--orange);font-size:12px}
+.navlinks{display:flex;gap:32px;align-items:center;font-size:13px}.navlinks a{color:#eee;text-decoration:none}.navlinks a:hover{color:var(--orange)}
+.navbtn{background:var(--orange);color:#111;border:0;border-radius:11px;padding:14px 23px;font-weight:800;cursor:pointer}
+.hero{min-height:520px;background:
+ radial-gradient(circle at 73% 55%,rgba(255,102,0,.48),transparent 21%),
+ radial-gradient(circle at 88% 28%,rgba(255,159,70,.12),transparent 25%),
+ linear-gradient(110deg,#060606 0%,#100c09 46%,#341707 100%);color:white;overflow:hidden}
+.hero-grid{min-height:520px;display:grid;grid-template-columns:42% 58%;align-items:center}
+.hero-copy{padding:38px 0 35px}.eyebrow{color:var(--orange);font-size:11px;font-weight:900;letter-spacing:3px;margin-bottom:14px}
+.hero h1{font-size:clamp(45px,5vw,76px);line-height:.92;letter-spacing:-4px;margin:0 0 23px;max-width:650px}.hero h1 span{color:var(--orange)}
+.hero p{font-size:16px;line-height:1.55;color:#ddd;max-width:610px;margin:0 0 26px}
+.actions{display:flex;gap:14px}.primary,.secondary{padding:15px 25px;border-radius:11px;font-weight:800;cursor:pointer}.primary{background:var(--orange);border:1px solid var(--orange);color:#111}.secondary{background:transparent;border:1px solid #777;color:#fff}
+.hero-visual{height:500px;position:relative;display:flex;align-items:center;justify-content:center}
+.hero-model{width:100%;height:100%;background:transparent;--poster-color:transparent}
+.model-fallback{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.bowl{width:min(560px,80%);aspect-ratio:1.35/1;border-radius:50%;background:radial-gradient(circle at 50% 35%,#ffd17a 0,#d8791c 25%,#7e320d 46%,#24130c 70%,transparent 71%);filter:drop-shadow(0 35px 30px rgba(0,0,0,.5));transform:perspective(500px) rotateX(13deg)}
+.model-viewer-ready .bowl{display:none}
+.hero-note{position:absolute;top:45px;left:12%;font-family:"Patrick Hand",cursive;font-size:27px;transform:rotate(-5deg)}.hero-note:after{content:"";display:block;width:110px;height:3px;background:var(--orange);transform:rotate(-9deg);margin:5px 0 0 10px}
+.controls{position:absolute;right:2%;top:90px;border:1px solid #655d57;border-radius:14px;overflow:hidden;background:rgba(10,10,10,.72);backdrop-filter:blur(8px)}
+.controls div{padding:13px 15px;text-align:center;font-size:10px;border-bottom:1px solid #4a443f}.controls div:last-child{border:0}
+.dish-tag{position:absolute;right:12%;bottom:145px;background:rgba(9,9,9,.82);border:1px solid #6b5b4d;padding:12px 16px;border-radius:13px}.dish-tag b{display:block;font-size:12px}.dish-tag small{color:#aaa}
+.thumbs{position:absolute;bottom:26px;right:5%;display:flex;gap:8px}.thumb{width:88px;height:60px;border:1px solid #5f564f;border-radius:9px;background:linear-gradient(145deg,#3a2113,#0c0908);display:grid;place-items:center;color:#ddd;font-size:8px;text-align:center;font-family:inherit;cursor:pointer;padding:0}.thumb.active{border:2px solid var(--orange)}
+.features{display:flex;gap:0;margin-top:35px}.feature{padding:0 27px;border-right:1px solid #45413d;max-width:205px}.feature:first-child{padding-left:0}.feature:last-child{border:0}.feature-icon{width:42px;height:42px;border:2px solid var(--orange);border-radius:50%;display:grid;place-items:center;color:var(--orange);margin-bottom:10px}.feature b{font-size:12px}.feature p{font-size:10px;margin:5px 0 0;color:#bbb;line-height:1.4}
+
+.create{padding:30px 0;background:linear-gradient(180deg,#f5ecdf,#e9dfd2)}
+.create-card{background:linear-gradient(135deg,#fffaf3,#f5ebdf);border:1px solid #d9cdbf;border-radius:20px;box-shadow:0 20px 55px rgba(62,44,27,.13);padding:27px}
+.section-kicker{font-size:10px;letter-spacing:2.5px;color:var(--orange);font-weight:900}.create h2{font-size:28px;letter-spacing:-1.2px;margin:6px 0 4px}.sub{font-size:11px;color:#667085;margin-bottom:20px}
+.form-grid{display:grid;grid-template-columns:1fr 1.02fr .95fr;gap:22px}.col{min-width:0}.col+.col{border-left:1px solid #ded2c4;padding-left:22px}
+.step-title{font-size:14px;font-weight:900;margin:0 0 15px;display:flex;gap:9px;align-items:center}.num{width:27px;height:27px;border-radius:50%;background:var(--orange);display:grid;place-items:center;color:#111;font-size:12px}
+label{font-size:10px;font-weight:800;display:block;margin:10px 0 5px}input{width:100%;height:39px;border:1px solid #d1c7bb;border-radius:9px;background:#fffdf9;padding:0 11px;font-size:10px;outline:none}input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,107,0,.1)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:9px}.drop{height:130px;border:1.5px dashed #b9afa4;border-radius:11px;display:grid;place-items:center;text-align:center;color:#273142;background:rgba(255,255,255,.42);cursor:pointer}.cloud{font-size:29px;color:var(--orange)}.drop b{font-size:11px}.drop small{font-size:8px;color:#7b8490;display:block;margin-top:5px}
+.dishes{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:15px}.dishslot{height:72px;border:1px dashed #bdb3a8;border-radius:9px;display:grid;place-items:center;color:#7b8794;font-size:23px;background:#fffdf9}.dishlabel{text-align:center;font-size:7px;margin-top:4px;color:#667085}
+.guide{height:100%;background:linear-gradient(145deg,#1a130f,#35190b);border-radius:14px;padding:16px;color:#fff;position:relative;overflow:hidden}.guide h3{font-size:18px;margin:4px 0 6px}.guide p{font-size:9px;color:#cfc6bd;line-height:1.45;margin:0 0 12px}
+.video{height:220px;border-radius:11px;overflow:hidden;border:1px solid #705d4e;position:relative;background:radial-gradient(circle at 50% 45%,rgba(255,107,0,.38),transparent 27%),linear-gradient(145deg,#050505,#2a1207);display:grid;place-items:center}.video-grid{position:absolute;inset:0;opacity:.2;background-image:linear-gradient(#fff1 1px,transparent 1px),linear-gradient(90deg,#fff1 1px,transparent 1px);background-size:25px 25px;transform:perspective(500px) rotateX(55deg) scale(1.3);transform-origin:center bottom}.play{width:62px;height:62px;border-radius:50%;background:var(--orange);color:#111;display:grid;place-items:center;font-size:23px;z-index:2;cursor:pointer;box-shadow:0 0 0 10px #ff6b001f}.video-title{position:absolute;left:14px;top:12px;font-size:8px;letter-spacing:1.5px;font-weight:900;z-index:2}.video-time{position:absolute;right:14px;bottom:12px;font-size:8px;color:#ddd;z-index:2}
+.guide-list{margin:13px 0 0;padding:12px;border:1px solid #684f3d;border-radius:10px;background:#25160d}.guide-list b{display:block;color:#ff9a42;font-size:9px;margin-bottom:8px}.guide-list div{font-size:8px;color:#ddd;margin:6px 0}.submit{margin-top:18px;width:100%;border:0;border-radius:10px;background:var(--orange);padding:13px;font-weight:900;cursor:pointer;color:#111}
+.why{padding:35px 0;background:linear-gradient(110deg,#0b0a09,#24150d);color:#fff}.why h2{margin:0;font-size:26px}.why-sub{color:#bcb5af;font-size:11px;margin:6px 0 24px}.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}.why-item{padding:8px 25px;border-right:1px solid #494039}.why-item:first-child{padding-left:0}.why-item:last-child{border:0}.why-icon{width:38px;height:38px;border:1px solid #ff9a55;border-radius:50%;display:grid;place-items:center;color:#ff9a55}.why-item b{display:block;margin:9px 0 5px;font-size:12px}.why-item p{font-size:9px;color:#aaa;line-height:1.45;margin:0}
+.cta{padding:45px 0;background:linear-gradient(rgba(23,13,7,.88),rgba(23,13,7,.94)),radial-gradient(circle at 20% 50%,#7c3514,transparent 35%),radial-gradient(circle at 80% 50%,#7c3514,transparent 35%);color:#fff;text-align:center}.cta h2{font-size:29px;margin:0 0 7px}.cta p{font-size:11px;color:#ccc}.cta button{margin-top:12px;background:var(--orange);border:0;border-radius:25px;padding:14px 28px;font-weight:900;cursor:pointer}
+footer{background:#080808;color:#aaa;padding:20px 3vw;font-size:9px;display:flex;justify-content:space-between;align-items:center}.footbrand{color:#fff;font-weight:900;font-size:18px}footer a{color:#aaa;text-decoration:none;margin-left:18px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(100px);background:#111;color:#fff;border:1px solid #444;padding:12px 18px;border-radius:9px;font-size:11px;transition:.3s;z-index:99}.toast.show{transform:translateX(-50%) translateY(0)}
+@media(max-width:900px){.nav{padding:0 15px}.navlinks{display:none}.hero-grid{grid-template-columns:1fr;min-height:auto}.hero-copy{padding:38px 6vw 20px}.hero h1{font-size:48px;letter-spacing:-2.5px}.hero-visual{height:380px}.features{margin-top:25px}.form-grid{grid-template-columns:1fr}.col+.col{border-left:0;border-top:1px solid #ded2c4;padding:20px 0 0}.why-grid{grid-template-columns:1fr 1fr;gap:15px}.why-item{border:0;padding:8px}.create-card{padding:20px}.cta{padding:35px 20px}footer{flex-direction:column;gap:10px;text-align:center}}
+@media(max-width:520px){.hero h1{font-size:41px}.actions{flex-direction:column}.features{display:grid;grid-template-columns:1fr 1fr}.feature{border:0;padding:10px 8px}.hero-visual{height:310px}.thumb{width:60px;height:45px}.thumbs{right:3%;gap:4px}.dish-tag{right:5%;bottom:115px}.two{grid-template-columns:1fr}.why-grid{grid-template-columns:1fr}.dishes{gap:4px}.dishslot{height:58px}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a class="brand" href="#"><img src="logo.png" alt="PLATE³"><span>PLATE<sup>3</sup></span></a>
+  <nav class="navlinks"><a href="#how">How It Works</a><a href="#examples">Examples</a><a href="#pricing">Pricing</a><a href="#contact">Contact</a><button class="navbtn" onclick="document.getElementById('create').scrollIntoView()">👤 &nbsp;For Restaurants</button></nav>
+</header>
+
+<section class="hero" id="examples">
+ <div class="container hero-grid">
+  <div class="hero-copy">
+   <div class="eyebrow">BRING YOUR DISHES TO LIFE</div>
+   <h1>Your Menu.<br>Now with a <span>3D</span><br>Highlight.</h1>
+   <p>Create your digital restaurant menu in minutes. Showcase your top 5 dishes in interactive 3D &amp; AR, while keeping your complete menu simple with 2D images.</p>
+   <div class="actions"><button class="primary" onclick="document.getElementById('create').scrollIntoView()">Create Your Menu →</button><button class="secondary" onclick="showToast('Sample menu demo coming soon.')">▶ &nbsp; View Sample Menu</button></div>
+   <div class="features">
+    <div class="feature"><div class="feature-icon">◇</div><b>3D Dish Highlights</b><p>Showcase your signature dishes.</p></div>
+    <div class="feature"><div class="feature-icon">▣</div><b>AR Experience</b><p>Let customers see dishes in their space.</p></div>
+    <div class="feature"><div class="feature-icon">▤</div><b>Full Menu in 2D</b><p>Upload your existing menu images.</p></div>
+   </div>
+  </div>
+  <div class="hero-visual">
+   <div class="hero-note">Real Food.<br>Real Experience.</div>
+   <model-viewer class="hero-model" src="tandoori_mix_grill.glb" camera-controls auto-rotate shadow-intensity="1" exposure="1.1" ar ar-modes="webxr scene-viewer quick-look"></model-viewer>
+   <div class="model-fallback"><div class="bowl"></div></div>
+   <div class="controls"><div>⟳<br>Rotate</div><div>⌕<br>Zoom</div><div>◇<br>View in AR</div></div>
+   <div class="dish-tag"><b id="heroDishName">◇ &nbsp; Tandoori Chicken</b><small id="heroDishAction">Explore in 3D</small></div>
+   <div class="thumbs" id="modelThumbs">
+  <button class="thumb active" data-model="0">🍗<br>Tandoori Chicken</button>
+  <button class="thumb" data-model="1">🍕<br>Cheese Pizza</button>
+  <button class="thumb" data-model="2">🍛<br>Dum Biryani</button>
+  <button class="thumb" data-model="3">🫓<br>Chocolate Naan</button>
+  <button class="thumb" data-model="4">🥘<br>American Chopsy</button>
+</div><div class="thumb">🍗<br>Butter Chicken</div><div class="thumb">🍲<br>Paneer Tikka</div><div class="thumb">🥘<br>Dal Makhani</div><div class="thumb">🍮<br>Gulab Jamun</div></div>
+  </div>
+ </div>
+</section>
+
+<section class="create" id="create">
+ <div class="container">
+  <div class="create-card">
+   <div class="section-kicker">CREATE YOUR MENU</div>
+   <h2>Get Your PLATE³ Menu in Just a Few Steps</h2>
+   <div class="sub">Tell us about your restaurant and upload your menu. Your unique PLATE³ menu link will be created after submission.</div>
+   <div class="form-grid">
+    <div class="col">
+     <h3 class="step-title"><span class="num">1</span>Restaurant Details</h3>
+     <label>Restaurant Name *</label><input id="restaurant" placeholder="e.g. Trill's Cafe & Restaurant">
+     <label>Address *</label><input placeholder="e.g. 123 Park Street, Block A">
+     <div class="two"><div><label>Zip Code *</label><input placeholder="700016"></div><div><label>City *</label><input placeholder="Kolkata"></div></div>
+     <label>Phone Number *</label><input placeholder="+91 98765 43210">
+     <label>Email Address (Optional)</label><input placeholder="hello@yourrestaurant.com">
+    </div>
+    <div class="col">
+     <h3 class="step-title"><span class="num">2</span>Upload Your Menu (2D Images)</h3>
+     <label>Menu pages *</label>
+     <div class="drop" onclick="document.getElementById('menuFiles').click()"><div><div class="cloud">☁</div><b>Drag &amp; drop your menu images here</b><small>or click to select files<br>JPG, PNG, PDF · No limit — 3, 10, 20 or more pages</small></div></div>
+     <input id="menuFiles" type="file" accept=".jpg,.jpeg,.png,.pdf" multiple hidden>
+     <h3 class="step-title" style="margin-top:18px"><span class="num">3</span>Select Your 3D Highlight Dishes (Max 5)</h3>
+     <div class="dishes">
+      <div><div class="dishslot" onclick="pickDish(0)">+</div><div class="dishlabel">Dish 1</div></div>
+      <div><div class="dishslot" onclick="pickDish(1)">+</div><div class="dishlabel">Dish 2</div></div>
+      <div><div class="dishslot" onclick="pickDish(2)">+</div><div class="dishlabel">Dish 3</div></div>
+      <div><div class="dishslot" onclick="pickDish(3)">+</div><div class="dishlabel">Dish 4</div></div>
+      <div><div class="dishslot" onclick="pickDish(4)">+</div><div class="dishlabel">Dish 5</div></div>
+     </div>
+     <small style="display:block;color:#7a8490;font-size:8px;margin-top:7px">Upload up to 5 high-quality dish photos. We will create the 3D models and add them within 48 hours.</small>
+     <input id="dishFiles" type="file" accept=".jpg,.jpeg,.png" multiple hidden>
+    </div>
+    <div class="col">
+     <div class="guide" id="how">
+      <div class="section-kicker">QUICK OWNER GUIDE</div>
+      <h3>Watch How It Works</h3>
+      <p>A short walkthrough for restaurant owners — from upload to your live PLATE³ menu.</p>
+      <div class="video" onclick="showToast('Replace this demo with your final PLATE³ owner-guide video.')">
+       <div class="video-grid"></div><div class="video-title">PLATE³ OWNER GUIDE</div><div class="play">▶</div><div class="video-time">0:00 / 2:08</div>
+      </div>
+      <div class="guide-list"><b>IN JUST 3 STEPS</b><div>① Fill out your restaurant details</div><div>② Upload your menu + 5 dish photos</div><div>③ We create your 3D menu and share your link</div></div>
+      <button class="submit" onclick="submitMenu()">Submit &amp; Create My Menu →</button>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="why" id="pricing">
+ <div class="container">
+  <h2>Why Choose PLATE³?</h2><div class="why-sub">More than just a menu. It's a better dining experience.</div>
+  <div class="why-grid">
+   <div class="why-item"><div class="why-icon">✧</div><b>Stand Out</b><p>Showcase your signature dishes in 3D &amp; AR.</p></div>
+   <div class="why-item"><div class="why-icon">⌘</div><b>Engage Customers</b><p>Let customers explore your food before ordering.</p></div>
+   <div class="why-item"><div class="why-icon">✓</div><b>Easy &amp; Hassle-Free</b><p>No technical knowledge required.</p></div>
+   <div class="why-item"><div class="why-icon">↗</div><b>Get More Business</b><p>A modern menu brings more visibility and footfall.</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="cta" id="contact">
+ <div class="container"><h2>Ready to Transform Your Menu?</h2><p>Join restaurants who are already using PLATE³ to create amazing dining experiences.</p><button onclick="document.getElementById('create').scrollIntoView()">👤 &nbsp; Get Started Now →</button></div>
+</section>
+
+<footer><div class="footbrand">🍽️ PLATE<sup>3</sup></div><div>Digital Menus for Modern Restaurants</div><div><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+const arModels = [
+  {name:"Tandoori Chicken",label:"SIGNATURE DISH",description:"A closer look at Tandoori Chicken.",src:"tandoori_mix_grill.glb",ready:true},
+  {name:"Cheese Margherita Pizza",label:"CONTINENTAL CLASSIC",description:"Classic pizza with rich tomato sauce, mozzarella and fresh basil.",src:"untitled.glb",ready:true},
+  {name:"Hyderabadi Chicken Dum Biryani",label:"CHEF'S PICK",description:"Fragrant basmati rice layered with tender chicken and aromatic spices.",src:"bili.glb",ready:true},
+  {name:"Chocolate Cheese Naan",label:"SWEET & SAVOURY",description:"Soft baked naan filled with rich chocolate and creamy cheese.",src:"chikonan.glb",ready:true},
+  {name:"American Chopsy",label:"GOURMET FAVOURITE",description:"Crispy golden chops with a rich continental-style sauce.",src:"americanc.glb",ready:true}
+];
+
+const toast=document.getElementById('toast');
+function showToast(msg){
+  toast.textContent=msg;toast.classList.add('show');
+  clearTimeout(window.tt);window.tt=setTimeout(()=>toast.classList.remove('show'),2800);
+}
+const heroViewer=document.querySelector('.hero-model');
+const heroDishName=document.getElementById('heroDishName');
+const heroDishAction=document.getElementById('heroDishAction');
+const thumbButtons=[...document.querySelectorAll('#modelThumbs .thumb')];
+
+function loadHeroModel(index){
+  const model=arModels[index];
+  if(!model || !heroViewer) return;
+  heroViewer.src=model.src;
+  heroViewer.alt=model.name+' 3D model';
+  heroDishName.innerHTML='◇ &nbsp; '+model.name;
+  heroDishAction.textContent='Explore in 3D';
+  thumbButtons.forEach((btn,i)=>btn.classList.toggle('active',i===index));
+  if(index>0) showToast(model.name+' selected.');
+}
+thumbButtons.forEach(btn=>btn.addEventListener('click',()=>loadHeroModel(Number(btn.dataset.model))));
+heroViewer?.addEventListener('load',()=>document.body.classList.add('model-viewer-ready'));
+heroViewer?.addEventListener('error',()=>showToast('3D model could not be loaded. Check the GLB path.'));
+
+function pickDish(i){document.getElementById('dishFiles').click()}
+document.getElementById('menuFiles').addEventListener('change',e=>{
+  if(e.target.files.length)showToast(e.target.files.length+' menu file(s) selected.');
+});
+document.getElementById('dishFiles').addEventListener('change',e=>{
+  if(e.target.files.length>5){showToast('Please select up to 5 dish photos.');return}
+  if(e.target.files.length)showToast(e.target.files.length+' dish photo(s) selected.');
+});
+function submitMenu(){
+  const name=document.getElementById('restaurant').value.trim();
+  if(!name){showToast('Please enter your restaurant name first.');document.getElementById('restaurant').focus();return}
+  showToast('Thank you! Your PLATE³ menu request has been submitted.');
+}
+</script>
+</body>
+</html>

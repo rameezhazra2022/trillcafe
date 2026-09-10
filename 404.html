@@ -1,0 +1,49 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PLATE³ — Restaurant Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+<style>
+:root{--o:#ff6b00;--cream:#f4eadc;--paper:#fffaf3;--ink:#111827;--muted:#667085}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial;background:var(--cream);color:var(--ink)}
+.top{background:#080808;color:#fff;min-height:72px;padding:8px 4vw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #302b27}
+.brand{font-weight:900;font-size:25px}.brand sup{color:var(--o);font-size:13px}.wrap{width:min(1180px,92vw);margin:auto}
+.hero{background:linear-gradient(120deg,#090807,#24130a 70%,#3a1908);color:#fff;padding:38px 0}.eyebrow{color:var(--o);font-size:10px;font-weight:900;letter-spacing:2.5px}.hero h1{font-size:clamp(36px,6vw,64px);line-height:.95;margin:8px 0 12px;letter-spacing:-2.5px}.hero p{color:#d8d1ca;font-size:13px;line-height:1.6;margin:4px 0}.info{margin-top:14px;color:#bbb;font-size:11px}
+.highlights{padding:30px 0}.section-title{font-size:25px;margin:0 0 5px}.section-sub{font-size:11px;color:var(--muted);margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.dish{background:var(--paper);border:1px solid #d8cabc;border-radius:16px;overflow:hidden}.viewer{height:330px;background:linear-gradient(145deg,#160e09,#2c160a)}model-viewer{width:100%;height:100%;--poster-color:transparent}.dish-body{padding:15px}.dish-body h3{margin:0 0 6px;font-size:16px}.badge{display:inline-block;background:#e7f8ee;color:#197348;font-size:8px;font-weight:900;padding:5px 8px;border-radius:99px}.ar-btn{margin-top:12px;width:100%;border:0;border-radius:9px;background:var(--o);padding:12px;font-weight:900;cursor:pointer}
+.menu{padding:10px 0 50px}.menu-card{background:var(--paper);border:1px solid #d8cabc;border-radius:16px;padding:18px}.menu-card h2{margin:0 0 15px;font-size:22px}.menu-page{width:100%;display:block;border-radius:10px;margin:0 0 14px;border:1px solid #e2d6ca}
+.loading,.error{text-align:center;padding:70px 20px}.error h1{font-size:30px}.error p{color:var(--muted)}footer{background:#080808;color:#aaa;padding:20px;text-align:center;font-size:9px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.viewer{height:300px}}
+</style></head><body>
+<header class="top"><div class="brand">PLATE<sup>3</sup></div><div style="font-size:10px;color:#aaa">DIGITAL MENU</div></header>
+<div id="loading" class="loading">Loading menu...</div><div id="error" class="error" style="display:none"></div>
+<main id="page" style="display:none">
+<section class="hero"><div class="wrap"><div class="eyebrow">WELCOME TO</div><h1 id="restaurantName"></h1><p id="address"></p><div class="info" id="phone"></div></div></section>
+<section class="highlights"><div class="wrap"><h2 class="section-title">3D Highlights</h2><div class="section-sub">Explore our signature dishes in 3D and AR.</div><div id="dishGrid" class="grid"></div></div></section>
+<section class="menu"><div class="wrap"><div class="menu-card"><h2>Full Menu</h2><div id="menuPages"></div></div></div></section>
+</main><footer>Powered by PLATE³</footer>
+<script>
+const sb=window.supabase.createClient('https://xsfpupefueccnhcvtdls.supabase.co','sb_publishable_ayAn7Nw7ROmU99h-HR_Ldw_TB8LIfFq');
+const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const publicUrl=(bucket,path)=>sb.storage.from(bucket).getPublicUrl(path).data.publicUrl;
+function showError(t,m){$('loading').style.display='none';$('error').style.display='block';$('error').innerHTML='<h1>'+esc(t)+'</h1><p>'+esc(m)+'</p>'}
+async function init(){
+ try{
+  const parts=location.pathname.split('/').filter(Boolean),slug=parts[parts.length-1];
+  if(!slug||slug==='404.html')return showError('Menu not found','Please check the restaurant link.');
+  const {data:r,error}=await sb.from('restaurant_submissions').select('*').eq('slug',slug).single();
+  if(error||!r)return showError('Menu not found','This restaurant menu could not be found.');
+  const {data:dishes,error:de}=await sb.from('dish_models').select('*').eq('submission_id',r.submission_id).eq('published',true).order('dish_number');
+  if(de)return showError('Unable to load menu','Please try again later.');
+  $('restaurantName').textContent=r.restaurant_name;$('address').textContent=[r.address,r.city,r.zip_code].filter(Boolean).join(', ');$('phone').textContent=r.phone?'☎ '+r.phone:'';
+  $('dishGrid').innerHTML=dishes.length?dishes.map(d=>{const u=publicUrl('3d-models',d.model_3d_path);return '<article class="dish"><div class="viewer"><model-viewer src="'+esc(u)+'" camera-controls auto-rotate shadow-intensity="1" exposure="1.05" ar ar-modes="webxr scene-viewer quick-look" alt="'+esc(d.dish_name||'3D dish')+'"></model-viewer></div><div class="dish-body"><h3>'+esc(d.dish_name||('Dish '+d.dish_number))+'</h3><span class="badge">3D AVAILABLE</span><button class="ar-btn" onclick="openAR(this)">View in AR</button></div></article>'}).join(''):'<div class="section-sub">No 3D highlights published yet.</div>';
+  const menus=Array.isArray(r.menu_files)?r.menu_files:[];
+  $('menuPages').innerHTML=menus.length?menus.map((p,i)=>{const u=publicUrl('restaurant-menus',p),pdf=/\.pdf($|\?)/i.test(p);return pdf?'<iframe class="menu-page" src="'+esc(u)+'" style="height:800px" title="Menu page '+(i+1)+'"></iframe>':'<img class="menu-page" src="'+esc(u)+'" alt="Menu page '+(i+1)+'" loading="lazy">'}).join(''):'<div class="section-sub">Menu pages are not available yet.</div>';
+  $('loading').style.display='none';$('page').style.display='block';
+ }catch(e){console.error(e);showError('Something went wrong','Please try again later.')}
+}
+async function openAR(btn){const v=btn.closest('.dish').querySelector('model-viewer');if(v&&v.canActivateAR){try{await v.activateAR()}catch(e){alert('AR could not be opened. Please try again on your phone.')}}else alert('AR is not available on this device/browser. You can still explore the 3D model.')}
+init();
+</script></body></html>

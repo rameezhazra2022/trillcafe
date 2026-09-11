@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PLATE³ — Digital Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3eadc;color:#111827;font-family:Inter,Arial,sans-serif}
+.top{height:82px;background:#080808;display:flex;align-items:center;justify-content:space-between;padding:0 5%;color:#aaa}
+.top img{height:58px;max-width:150px;object-fit:contain}
+.top span{font-size:11px;letter-spacing:2px}
+.wrap{max-width:1240px;margin:auto;padding:32px 20px 55px}
+.card{overflow:hidden;border-radius:24px;background:#fffaf3;border:1px solid #dfd3c4;box-shadow:0 20px 60px rgba(45,30,18,.12)}
+.head{padding:30px 34px;background:linear-gradient(120deg,#fffaf3,#ecdfd0);display:flex;justify-content:space-between;gap:20px}
+.kicker{font-size:9px;letter-spacing:2.5px;color:#ff6800;font-weight:900}
+.head h1{margin:8px 0;font-size:40px;letter-spacing:-1.5px}
+.address{font-size:12px;color:#687181;line-height:1.65}
+.badge{background:#111;color:#fff;border-radius:20px;padding:9px 13px;height:max-content;font-size:9px;white-space:nowrap}
+.badge i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff6800;margin-right:6px}
+.hero3d{padding:30px 34px;background:linear-gradient(145deg,#090807,#301206);color:#fff}
+.hero3d h2{font-size:21px;margin:0 0 14px}
+.modelbox{height:360px;border:1px solid #65493a;border-radius:17px;overflow:hidden;position:relative;background:radial-gradient(circle at 50% 42%,rgba(255,104,0,.34),transparent 26%),#0b0807}
+model-viewer{width:100%;height:100%}
+.pending{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.pending-inner{max-width:520px;padding:25px}
+.pending .icon{width:64px;height:64px;border:1px solid #ff6800;border-radius:50%;display:grid;place-items:center;margin:auto;color:#ff6800;font-size:27px}
+.pending h3{font-size:23px;margin:14px 0 8px}
+.pending p{font-size:11px;line-height:1.65;color:#c8c1ba}
+.pending strong{color:#ff9a3d}
+.menus{padding:30px 34px}
+.menus h2{font-size:22px;margin:0 0 17px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.menu-card{display:block;text-decoration:none}
+.menu-img{width:100%;display:block;border-radius:12px;border:1px solid #ded4c8;background:#eee;box-shadow:0 8px 22px rgba(45,30,18,.08)}
+.menu-number{text-align:center;font-size:10px;color:#687181;margin-top:7px}
+.error{text-align:center;padding:100px 20px}
+.error h1{font-size:34px;margin:0 0 10px}
+.error p{color:#687181;line-height:1.6}
+.retry{display:inline-block;margin-top:15px;padding:11px 17px;border-radius:10px;background:#ff6800;color:#111;text-decoration:none;font-weight:800;font-size:12px}
+footer{background:#090909;color:#aaa;text-align:center;padding:22px;font-size:9px}
+footer b{color:#fff}
+@media(max-width:750px){
+ .top{height:66px;padding:0 16px}.top img{height:48px}
+ .wrap{padding:15px 9px 30px}.head{padding:23px 18px;display:block}.head h1{font-size:30px}
+ .badge{display:inline-block;margin-top:12px}.hero3d{padding:23px 13px}.modelbox{height:300px}
+ .menus{padding:23px 13px}.grid{grid-template-columns:1fr 1fr;gap:9px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <a href="/"><img src="logo.png" alt="PLATE³"></a>
+  <span>DIGITAL MENU</span>
+</header>
+
+<main class="wrap">
+  <div id="app" class="card">
+    <div class="error"><h1>Loading menu…</h1><p>Please wait.</p></div>
+  </div>
+</main>
+
+<footer>Powered by <b>PLATE³</b> · See Before You Order.</footer>
+
+<script>
+const SUPABASE_URL = 'https://xsfpupefueccnhcvtdls.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_ayAn7Nw7ROmU99h-HR_Ldw_TB8LIfFq';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const app = document.getElementById('app');
+
+function esc(s){
+  return String(s ?? '').replace(/[&<>"']/g,c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+function getSlug(){
+  return decodeURIComponent(location.pathname.split('/').filter(Boolean).pop() || '').toLowerCase();
+}
+
+function publicStorageUrl(bucket,path){
+  return SUPABASE_URL + '/storage/v1/object/public/' + bucket + '/' +
+         String(path).split('/').map(encodeURIComponent).join('/');
+}
+
+async function load(){
+  const slug = getSlug();
+
+  if(!slug){
+    location.href='/';
+    return;
+  }
+
+  const {data:r,error} = await sb
+    .from('restaurant_submissions')
+    .select('restaurant_name,slug,address,zip_code,city,phone,email,zomato_url,swiggy_url,menu_files,dish_photos,status')
+    .eq('slug',slug)
+    .maybeSingle();
+
+  if(error){
+    console.error('PLATE3 database error:',error);
+    app.innerHTML = `
+      <div class="error">
+        <h1>Unable to load menu</h1>
+        <p>There was a problem connecting to the menu service.</p>
+        <a class="retry" href="">Try Again</a>
+      </div>`;
+    return;
+  }
+
+  if(!r){
+    app.innerHTML = `
+      <div class="error">
+        <h1>Menu not found</h1>
+        <p>The restaurant page <strong>${esc(slug)}</strong> does not exist yet.</p>
+        <a class="retry" href="/">Go to PLATE³</a>
+      </div>`;
+    return;
+  }
+
+  const menus = Array.isArray(r.menu_files) ? r.menu_files : [];
+  const dishPhotos = Array.isArray(r.dish_photos) ? r.dish_photos : [];
+
+  const menuHtml = menus.length
+    ? menus.map((path,i)=>{
+        const url = publicStorageUrl('restaurant-menus',path);
+        return `<a class="menu-card" href="${esc(url)}" target="_blank" rel="noopener">
+          <img class="menu-img" src="${esc(url)}" alt="Menu page ${i+1}" loading="lazy">
+          <div class="menu-number">MENU PAGE ${i+1}</div>
+        </a>`;
+      }).join('')
+    : '<p class="address">Your menu pages are being prepared.</p>';
+
+  const dishHtml = dishPhotos.length
+    ? `<p style="font-size:10px;color:#c8c1ba;margin:12px 0 0">
+         ${dishPhotos.length} signature dish photo${dishPhotos.length===1?'':'s'} received. PLATE³ is preparing the 3D highlights.
+       </p>`
+    : '';
+
+  app.innerHTML = `
+    <section class="head">
+      <div>
+        <div class="kicker">PLATE³ DIGITAL MENU</div>
+        <h1>${esc(r.restaurant_name)}</h1>
+        <div class="address">
+          ${esc(r.address)} · ${esc(r.city)} ${esc(r.zip_code)}<br>
+          ${esc(r.phone)}
+        </div>
+      </div>
+      <div class="badge"><i></i>3D IN PROGRESS</div>
+    </section>
+
+    <section class="hero3d">
+      <h2>Signature 3D Experience</h2>
+      <div class="modelbox">
+        <div class="pending">
+          <div class="pending-inner">
+            <div class="icon">◇</div>
+            <h3>Your 3D experience is being prepared.</h3>
+            <p>
+              PLATE³ has received your signature dish photos.
+              <strong>Your 3D highlights will be added within 48 hours.</strong>
+            </p>
+            ${dishHtml}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="menus">
+      <h2>Our Menu</h2>
+      <div class="grid">${menuHtml}</div>
+    </section>
+  `;
+}
+
+load();
+</script>
+</body>
+</html>

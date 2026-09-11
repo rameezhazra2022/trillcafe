@@ -1,0 +1,27 @@
+PLATE³ FINAL CONNECTED PACKAGE
+
+Supabase project:
+https://xsfpupefueccnhcytdls.supabase.co
+
+The browser files already contain the Supabase Project URL and publishable key.
+Never put the sb_secret key in these files.
+
+IMPORTANT:
+The existing project already contains the restaurants table and the storage buckets:
+- restaurant-assets
+- 3d-models
+- dish-photos
+- restaurant-menus
+
+Do not delete those buckets.
+Do not run the previous create-table schema again.
+
+Before GitHub upload:
+1. In Supabase SQL Editor, run plate3-migration.sql once.
+2. Confirm it succeeds.
+3. Upload index.html, restaurant.html, 404.html and logo.png to the GitHub repository root.
+4. Keep the existing GLB/menu assets in the repository until the new dynamic flow is tested.
+
+The website uses the existing `restaurants.restaurant_name` field and the public
+`restaurant-assets` bucket. It creates a slug from the restaurant name and then
+redirects to /<slug>.

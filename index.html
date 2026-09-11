@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PLATE³ — See Before You Order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--orange:#ff6800;--orange2:#ff8a1f;--cream:#fffaf3;--ink:#101827;--muted:#667085;--line:#e5dfd6;--black:#080808}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--cream);color:var(--ink)}a{text-decoration:none;color:inherit}button,input{font:inherit}img{display:block;max-width:100%}
+
+/* HEADER */
+header{height:68px;background:#080808;color:#fff;position:sticky;top:0;z-index:50;border-bottom:1px solid #292929}
+.header-inner{height:100%;max-width:1500px;margin:auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;gap:25px}
+.logo{height:48px;width:auto}.nav{display:flex;align-items:center;gap:30px;font-size:12px}.nav a{color:#ddd}.nav a:hover,.nav .active{color:var(--orange)}
+.restaurant-btn{background:var(--orange);color:#111;border-radius:10px;padding:12px 20px;font-weight:900;font-size:12px}
+
+/* HERO */
+.hero{min-height:610px;background:
+ radial-gradient(circle at 72% 48%,rgba(255,105,0,.32),transparent 22%),
+ radial-gradient(circle at 85% 65%,rgba(112,46,12,.45),transparent 35%),
+ linear-gradient(120deg,#030303,#0a0807 55%,#241006);color:#fff;overflow:hidden}
+.hero-inner{max-width:1500px;min-height:610px;margin:auto;padding:45px 4vw;display:grid;grid-template-columns:43% 57%;align-items:center}
+.hero-copy{padding-right:20px;z-index:2}.eyebrow{font-size:10px;letter-spacing:3px;color:#ff922b;font-weight:900}.hero h1{font-size:clamp(52px,5.3vw,80px);line-height:.88;letter-spacing:-4px;margin:13px 0 20px}.hero h1 span{color:var(--orange2)}.hero p{font-size:15px;line-height:1.55;color:#ddd;max-width:530px}
+.actions{display:flex;gap:12px;margin:24px 0 30px}.primary,.secondary{padding:13px 22px;border-radius:10px;font-size:12px;font-weight:900}.primary{background:var(--orange);color:#111}.secondary{border:1px solid #777;color:#fff}
+.hero-features{display:grid;grid-template-columns:repeat(3,1fr);max-width:620px}.hero-feature{padding:0 14px;border-right:1px solid #454545}.hero-feature:first-child{padding-left:0}.hero-feature:last-child{border:0}.feature-icon{width:38px;height:38px;border:2px solid var(--orange);border-radius:50%;display:grid;place-items:center;color:var(--orange);margin-bottom:7px;font-size:17px}.hero-feature strong{display:block;font-size:11px}.hero-feature small{display:block;color:#aaa;font-size:9px;line-height:1.35;margin-top:4px}
+
+.hero-visual{height:100%;min-height:520px;position:relative}.hero-model{position:absolute;inset:0;width:100%;height:100%;background:transparent;--poster-color:transparent;--progress-bar-color:var(--orange)}.hero-note{position:absolute;top:3%;left:12%;font-family:cursive;font-size:19px;transform:rotate(-5deg);z-index:3}.hero-note:after{content:"";display:block;width:80px;height:3px;background:var(--orange);transform:rotate(-8deg);margin:5px 0 0 20px}
+.tools{position:absolute;right:0;top:34%;border:1px solid #777;border-radius:11px;overflow:hidden;background:#050505c9;z-index:5}.tools button{width:58px;height:58px;display:block;border:0;border-bottom:1px solid #444;background:none;color:#fff;font-size:8px;cursor:pointer}.tools button:last-child{border:0}.tools b{display:block;font-size:18px;margin-bottom:2px}
+.hero-label{position:absolute;right:17%;bottom:24%;background:#070707df;border:1px solid #63544a;border-radius:10px;padding:9px 12px;z-index:5;font-size:9px}.hero-label strong{display:block}.hero-label small{color:#aaa}.dish-strip{position:absolute;bottom:3%;left:7%;right:6%;display:flex;justify-content:center;gap:8px;z-index:5}.mini{width:70px;text-align:center;font-size:7px}.mini-box{height:47px;border:1px solid #777;border-radius:8px;background:radial-gradient(circle,#d87520,#35150a);display:grid;place-items:center;font-size:17px}.mini:first-child .mini-box{border:2px solid var(--orange)}.mini small{display:block;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* CREATE SECTION */
+.create-section{padding:45px 3vw;background:var(--cream)}.create-card{max-width:1450px;margin:auto;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 14px 45px rgba(22,25,30,.08);overflow:hidden}
+.create-head{padding:25px 28px 15px}.create-head h2{margin:0;font-size:31px;letter-spacing:-1.3px}.create-head p{margin:6px 0 0;color:var(--muted);font-size:12px}
+.create-body{display:grid;grid-template-columns:30% 40% 30%;padding:8px 0 0}
+.details,.uploads,.live-preview{padding:12px 25px}.uploads{border-left:1px solid var(--line);border-right:1px solid var(--line)}.section-title{font-size:13px;font-weight:900;margin:0 0 12px;display:flex;align-items:center;gap:8px}.section-title .icon{color:var(--orange);font-size:19px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field.full{grid-column:1/-1}label{font-size:10px;font-weight:800;display:block;margin-bottom:5px}label i{font-style:normal;color:var(--orange)}label span{font-weight:600;color:#737b86}
+input{width:100%;height:36px;border:1px solid #cfd5dc;border-radius:8px;padding:8px 10px;font-size:10px;outline:none}input:focus{border-color:var(--orange);box-shadow:0 0 0 3px #ff680014}
+.drop{height:112px;border:1.5px dashed #bfc6ce;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fcfcfc;cursor:pointer}.drop:hover{border-color:var(--orange);background:#fffaf6}.cloud{font-size:28px;color:var(--orange)}.drop strong{font-size:10px;margin-top:5px}.drop small{font-size:8px;color:#69717c;line-height:1.4;margin-top:5px}#menuFiles{display:none}.thumbs{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.thumb{width:42px;height:32px;border:1px solid #ddd;border-radius:5px;overflow:hidden;background:#eee}.thumb img{width:100%;height:100%;object-fit:cover}
+.dishes-title{margin-top:16px}.dish-slots{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.slot-wrap{text-align:center;color:#69717c;font-size:8px}.slot{height:55px;border:1.5px dashed #c6cbd1;border-radius:8px;display:grid;place-items:center;color:#65707c;font-size:23px;cursor:pointer;overflow:hidden;background:#fff}.slot:hover{border-color:var(--orange);color:var(--orange)}.slot img{width:100%;height:100%;object-fit:cover}.dishfile{display:none}.help{font-size:8px;line-height:1.35;color:#69717c;margin-top:7px}
+
+/* LIVE PREVIEW */
+.live-preview{background:linear-gradient(145deg,#fffaf3,#fff);display:flex;flex-direction:column}.preview-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}.preview-kicker{display:block;color:var(--orange);font-size:7px;letter-spacing:1.7px;font-weight:900}.preview-head h3{margin:3px 0 0;font-size:17px;letter-spacing:-.4px}.status{font-size:7px;color:#5d6874;font-weight:900}.status i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#32b66a;margin-right:4px}
+.preview-stage{position:relative;flex:1;min-height:260px;border-radius:14px;overflow:hidden;border:1px solid #382217;background:radial-gradient(circle at 50% 40%,rgba(255,106,0,.33),transparent 29%),linear-gradient(145deg,#080808,#291107)}#formModel{width:100%;height:100%;min-height:260px;background:transparent;--poster-color:transparent;--progress-bar-color:var(--orange)}.preview-label{position:absolute;left:10px;bottom:10px;display:flex;align-items:center;gap:7px;padding:8px 10px;background:#050505e8;color:#fff;border:1px solid #66584e;border-radius:8px}.preview-label span{width:23px;height:23px;border:1px solid var(--orange);border-radius:50%;display:grid;place-items:center;color:var(--orange)}.preview-label strong{display:block;font-size:8px}.preview-label small{display:block;color:#aaa;font-size:6.5px;margin-top:2px}.preview-controls{position:absolute;right:9px;top:9px;display:flex;gap:4px}.preview-controls button{width:28px;height:28px;border:1px solid #66584e;border-radius:7px;background:#050505bd;color:#fff;cursor:pointer}.preview-caption{padding:9px 0 0;text-align:center}.preview-caption strong{display:block;font-size:9px}.preview-caption small{color:#7b838d;font-size:7px}
+
+.workflow{margin:18px 25px 20px;padding:18px 20px;border:1px solid #eadfd2;border-radius:15px;background:linear-gradient(110deg,#fffdf9,#fff8ef);position:relative;overflow:hidden}.workflow:after{content:"";position:absolute;width:250px;height:250px;border:1px solid #f3d5bd;border-radius:50%;right:-100px;bottom:-170px}.workflow-head{display:flex;justify-content:space-between;align-items:flex-start}.workflow-kicker{font-size:8px;letter-spacing:2px;color:var(--orange);font-weight:900}.workflow h3{margin:4px 0 0;font-size:18px}.workflow-tag{font-size:7px;letter-spacing:1px;font-weight:900;color:#b45b1c;border:1px solid #f0c8a7;border-radius:20px;padding:6px 9px;background:#fff6ed}.steps{display:grid;grid-template-columns:1fr 35px 1fr 35px 1fr;align-items:center;margin-top:15px}.step{display:flex;gap:9px;align-items:center}.num{width:36px;height:36px;border-radius:10px;background:#111;color:#fff;display:grid;place-items:center;font-size:9px;font-weight:900}.step strong{display:block;font-size:9px}.step small{display:block;color:#737b86;font-size:7px;line-height:1.35;margin-top:2px}.line{height:1px;background:#edc7a8;position:relative}.line:after{content:"›";position:absolute;right:-2px;top:-8px;color:var(--orange);font-size:13px}.workflow-foot{margin-top:13px;padding-top:10px;border-top:1px solid #eee4da;color:#69717c;font-size:7px}.workflow-foot strong{color:#202938;margin-right:6px}
+
+.generate-wrap{padding:0 25px 24px}.generate{width:100%;height:44px;border:0;border-radius:24px;background:var(--orange);color:#111;font-size:14px;font-weight:900;cursor:pointer}.generate:hover{background:var(--orange2)}.instant{text-align:center;font-size:8px;color:#69717c;margin-top:5px}
+
+/* BENEFITS */
+.benefits{padding:0 3vw 45px;background:var(--cream)}.benefit-card{max-width:1450px;margin:auto;background:#fff;border:1px solid var(--line);border-radius:16px;display:grid;grid-template-columns:repeat(4,1fr);padding:17px 5px;box-shadow:0 7px 25px rgba(0,0,0,.05)}.benefit{text-align:center;border-right:1px solid #e2ddd5;padding:0 10px}.benefit:last-child{border:0}.bi{font-size:25px;color:var(--orange);margin-bottom:5px}.benefit strong{font-size:10px}.benefit small{display:block;font-size:8px;color:#69717c;margin-top:3px}
+
+/* FOOTER */
+footer{background:#090909;color:#fff;padding:25px 3vw}.footer-inner{max-width:1450px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:20px}.footer-brand{display:flex;align-items:center;gap:13px}.footer-logo{height:38px}.footer-tag{font-size:9px;color:#ddd;font-weight:700}.footer-links{display:flex;gap:20px;font-size:8px;color:#bbb}.footer-links a:hover{color:#fff}.copyright{max-width:1450px;margin:18px auto 0;padding-top:13px;border-top:1px solid #292929;color:#888;font-size:7px;display:flex;justify-content:space-between}
+
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,15px);background:#111;color:#fff;border-left:3px solid var(--orange);padding:10px 15px;border-radius:8px;font-size:10px;opacity:0;pointer-events:none;transition:.2s;z-index:100}.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:1050px){.hero-inner{grid-template-columns:46% 54%}.create-body{grid-template-columns:34% 66%}.live-preview{display:none}.nav{gap:18px}.hero h1{font-size:55px}.details,.uploads{padding-left:18px;padding-right:18px}}
+@media(max-width:700px){
+ header{height:58px}.header-inner{padding:0 15px}.logo{height:40px}.nav{display:none}.restaurant-btn{padding:10px 13px;font-size:10px}
+ .hero{min-height:auto}.hero-inner{min-height:auto;display:block;padding:35px 20px 20px}.hero-copy{padding:0}.hero h1{font-size:51px;letter-spacing:-3px}.hero p{font-size:13px}.actions{flex-wrap:wrap}.hero-features{max-width:none}.hero-feature{padding:0 7px}.hero-feature strong{font-size:9px}.hero-feature small{font-size:7px}.hero-visual{height:430px;min-height:430px;margin-top:10px}.hero-note{left:9%;font-size:14px}.tools{right:0}.tools button{width:48px;height:48px}.dish-strip{left:0;right:0}.mini{width:56px}.mini-box{height:40px}
+ .create-section{padding:22px 12px}.create-head{padding:20px 16px 10px}.create-head h2{font-size:25px}.create-body{grid-template-columns:1fr}.details,.uploads,.live-preview{padding:14px 16px}.uploads{border-left:0;border-right:0;border-top:1px solid var(--line)}.live-preview{display:flex;border-top:1px solid var(--line)}.preview-stage{height:280px;min-height:280px}#formModel{height:280px;min-height:280px}.fields{gap:8px}.workflow{margin:14px 16px 18px}.steps{grid-template-columns:1fr;gap:9px}.line{display:none}.workflow-head{display:block}.workflow-tag{display:inline-block;margin-top:8px}.generate-wrap{padding:0 16px 18px}.benefits{padding:0 12px 25px}.benefit-card{grid-template-columns:1fr 1fr}.benefit{padding:10px 5px;border-bottom:1px solid #e2ddd5}.benefit:nth-child(2){border-right:0}.benefit:nth-child(3),.benefit:nth-child(4){border-bottom:0}.footer-inner{align-items:flex-start;flex-direction:column}.footer-links{flex-wrap:wrap}.copyright{display:block;line-height:1.5}
+}
+
+/* ================= CREATIVE V2 ================= */
+:root{
+  --orange:#ff6800;--orange2:#ff9a3d;--cream:#fffaf2;--ink:#101827;
+}
+body{
+  background:
+    radial-gradient(circle at 10% 12%,rgba(255,104,0,.055),transparent 20%),
+    radial-gradient(circle at 90% 48%,rgba(255,104,0,.045),transparent 24%),
+    var(--cream);
+}
+header{
+  backdrop-filter:blur(16px);
+  background:rgba(8,8,8,.88);
+}
+.hero{
+  min-height:570px;
+  background:
+    radial-gradient(circle at 73% 47%,rgba(255,104,0,.42),transparent 17%),
+    radial-gradient(circle at 82% 64%,rgba(255,120,20,.13),transparent 32%),
+    linear-gradient(115deg,#020202 0%,#090807 50%,#2b1005 100%);
+}
+.hero:before{
+  content:"";
+  position:absolute;inset:68px 0 auto;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);
+}
+.hero-inner{position:relative}
+.hero-copy:after{
+  content:"";
+  position:absolute;left:3.8vw;top:18%;width:260px;height:260px;
+  border:1px solid rgba(255,104,0,.10);border-radius:50%;
+  box-shadow:0 0 0 25px rgba(255,104,0,.018),0 0 0 52px rgba(255,104,0,.012);
+  pointer-events:none;
+}
+.hero h1{text-shadow:0 8px 30px rgba(0,0,0,.35)}
+.hero h1 span{
+  background:linear-gradient(90deg,#ff6200,#ffab4b);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-visual:after{
+  content:"3D • AR • 2D";
+  position:absolute;right:9%;top:8%;
+  color:rgba(255,255,255,.22);font-size:8px;font-weight:900;letter-spacing:3px;
+}
+.hero-model{filter:drop-shadow(0 28px 28px rgba(0,0,0,.5))}
+.hero-label{box-shadow:0 15px 35px rgba(0,0,0,.35);backdrop-filter:blur(10px)}
+.dish-strip .mini-box{box-shadow:0 7px 20px rgba(0,0,0,.35);transition:.25s}
+.dish-strip .mini:hover{transform:translateY(-5px)}
+.dish-strip .mini{transition:.25s}
+
+.create-section{padding-top:38px}
+.create-card{
+  position:relative;
+  box-shadow:0 22px 65px rgba(24,25,28,.10);
+}
+.create-card:before{
+  content:"";
+  position:absolute;left:0;top:0;width:6px;height:100%;
+  background:linear-gradient(#ff6800,#ffb35f,#ff6800);
+}
+.create-head{
+  background:linear-gradient(100deg,#fff,#fffaf4);
+  position:relative;
+}
+.create-head:after{
+  content:"BUILD YOUR DIGITAL MENU";
+  position:absolute;right:28px;top:30px;
+  font-size:8px;letter-spacing:2px;font-weight:900;color:#c5bcb1;
+}
+.details,.uploads,.live-preview{position:relative}
+.section-title .icon{filter:drop-shadow(0 3px 5px rgba(255,104,0,.16))}
+input{
+  background:#fff;
+  transition:.2s;
+}
+input:hover{border-color:#b7bec7}
+.drop{
+  position:relative;
+  overflow:hidden;
+}
+.drop:before{
+  content:"";
+  position:absolute;inset:7px;border-radius:7px;
+  border:1px solid rgba(255,104,0,.08);pointer-events:none;
+}
+.cloud{
+  text-shadow:0 4px 12px rgba(255,104,0,.22);
+}
+.slot{
+  transition:.2s;position:relative;
+}
+.slot:after{
+  content:"ADD";
+  position:absolute;bottom:5px;right:7px;
+  font-size:5px;font-weight:900;letter-spacing:1px;color:#b2b7bd;
+}
+.slot:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(20,25,30,.07)}
+
+.live-preview{
+  background:
+    radial-gradient(circle at 75% 35%,rgba(255,104,0,.10),transparent 25%),
+    linear-gradient(145deg,#fffaf3,#fff);
+}
+.preview-stage{
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 15px 35px rgba(26,12,4,.13);
+}
+.preview-stage:after{
+  content:"PLATE³";
+  position:absolute;right:13px;bottom:13px;
+  color:rgba(255,255,255,.14);font-size:9px;font-weight:900;letter-spacing:2px;
+}
+.preview-caption{
+  position:relative;padding:11px 0 2px;
+}
+.preview-caption:before{
+  content:"";
+  display:block;width:35px;height:2px;background:var(--orange);margin:0 auto 8px;
+}
+.workflow{
+  background:
+    radial-gradient(circle at 92% 15%,rgba(255,104,0,.11),transparent 23%),
+    linear-gradient(110deg,#fffdf9,#fff7ed);
+  box-shadow:0 9px 30px rgba(20,25,30,.055);
+}
+.num{
+  box-shadow:0 7px 16px rgba(0,0,0,.15);
+}
+.workflow h3{letter-spacing:-.55px}
+.generate{
+  box-shadow:0 10px 25px rgba(255,104,0,.22);
+  transition:.2s;
+}
+.generate:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(255,104,0,.28)}
+.benefit-card{overflow:hidden}
+.benefit{transition:.2s}
+.benefit:hover{background:#fff9f2;transform:translateY(-2px)}
+.bi{filter:drop-shadow(0 5px 8px rgba(255,104,0,.16))}
+footer{position:relative;overflow:hidden}
+footer:before{
+  content:"";
+  position:absolute;width:420px;height:420px;right:-250px;top:-300px;
+  border:1px solid rgba(255,104,0,.16);border-radius:50%;
+  box-shadow:0 0 0 30px rgba(255,104,0,.025),0 0 0 60px rgba(255,104,0,.018);
+}
+
+/* Little premium badges */
+.hero-copy .eyebrow:before{
+  content:"✦";margin-right:7px;color:#fff;
+}
+@media(max-width:700px){
+  .create-head:after{display:none}
+  .hero:before{display:none}
+  .hero-copy:after{display:none}
+}
+
+
+.trust-ribbon{
+  max-width:1220px;margin:-22px auto 0;position:relative;z-index:10;
+  background:rgba(255,255,255,.96);border:1px solid #e8e0d7;
+  border-radius:14px;padding:11px 18px;display:grid;
+  grid-template-columns:1fr 1px 1fr 1px 1fr 1px 1fr;
+  align-items:center;box-shadow:0 14px 35px rgba(20,25,30,.10);
+  backdrop-filter:blur(12px);
+}
+.trust-ribbon>div{display:flex;align-items:center;justify-content:center;gap:7px}
+.trust-ribbon span{color:var(--orange);font-size:14px;font-weight:900}
+.trust-ribbon strong{font-size:8px}.trust-ribbon small{font-size:6.5px;color:#7b838d}
+.trust-ribbon i{width:1px;height:25px;background:#e4ded6}
+@media(max-width:700px){
+ .trust-ribbon{margin:0 12px;padding:9px;grid-template-columns:1fr 1fr;gap:8px}
+ .trust-ribbon i{display:none}.trust-ribbon>div{justify-content:flex-start}
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#"><img class="logo" src="logo.png" alt="PLATE³"></a>
+    <nav class="nav">
+      <a href="#experience">How It Works</a><a href="#create">Create Menu</a><a href="#benefits">Benefits</a>
+      <a href="sample-menu.html">Sample Menu</a><a href="#contact">Contact</a>
+    </nav>
+    <a class="restaurant-btn" href="#create">♙ &nbsp; For Restaurants</a>
+  </div>
+</header>
+
+<section class="hero" id="experience">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="eyebrow">BRING YOUR DISHES TO LIFE</div>
+      <h1>Your Menu.<br>Now with a <span>3D</span> Highlight.</h1>
+      <p>Create your digital restaurant menu in minutes. Showcase your top 5 dishes in interactive 3D &amp; AR, while keeping your complete menu simple with 2D images.</p>
+      <div class="actions"><a class="primary" href="#create">Create Your Menu →</a><a class="secondary" href="sample-menu.html">▶ &nbsp; View Sample Menu</a></div>
+      <div class="hero-features">
+        <div class="hero-feature"><div class="feature-icon">◇</div><strong>3D Dish Highlights</strong><small>Showcase your signature dishes.</small></div>
+        <div class="hero-feature"><div class="feature-icon">▣</div><strong>AR Experience</strong><small>Let customers see dishes in their space.</small></div>
+        <div class="hero-feature"><div class="feature-icon">▤</div><strong>Full Menu in 2D</strong><small>Upload your existing menu images.</small></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-note">Real Food.<br>Real Experience.</div>
+      <model-viewer id="heroModel" class="hero-model" src="tandoori_mix_grill.glb" alt="PLATE³ interactive dish" camera-controls auto-rotate shadow-intensity="1" exposure="1.05" camera-orbit="0deg 70deg 2.8m" field-of-view="34deg"></model-viewer>
+      <div class="tools"><button onclick="toggleHeroRotate()">⟳<br>Rotate</button><button onclick="heroZoom()">⌕<br>Zoom</button><button onclick="heroAR()">◇<br>View in AR</button></div>
+      <div class="hero-label"><strong>◇ &nbsp; Chicken Biryani</strong><small>Explore in 3D</small></div>
+      <div class="dish-strip">
+        <div class="mini"><div class="mini-box">🍚</div><small>Chicken Biryani</small></div>
+        <div class="mini"><div class="mini-box">🍗</div><small>Butter Chicken</small></div>
+        <div class="mini"><div class="mini-box">🍛</div><small>Paneer Tikka</small></div>
+        <div class="mini"><div class="mini-box">🥣</div><small>Dal Makhani</small></div>
+        <div class="mini"><div class="mini-box">🍮</div><small>Gulab Jamun</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="trust-ribbon">
+  <div><span>✦</span><strong>Interactive 3D</strong><small>Signature dishes</small></div>
+  <i></i>
+  <div><span>◈</span><strong>AR Ready</strong><small>See it in your space</small></div>
+  <i></i>
+  <div><span>▤</span><strong>Full 2D Menu</strong><small>Keep your existing menu</small></div>
+  <i></i>
+  <div><span>↗</span><strong>One Smart Link</strong><small>Share everywhere</small></div>
+</div>
+
+<section class="create-section" id="create">
+  <div class="create-card">
+    <div class="create-head">
+      <h2>Create Your Restaurant Menu</h2>
+      <p>Enter your restaurant details, upload your menu and select your signature dishes. We'll turn it into a PLATE³ experience.</p>
+    </div>
+
+    <div class="create-body">
+      <div class="details">
+        <div class="section-title"><span class="icon">♜</span>Restaurant Details</div>
+        <div class="fields">
+          <div class="field full"><label>Restaurant Name <i>*</i></label><input id="restaurantName" placeholder="e.g. Trill's Cafe & Restaurant"></div>
+          <div class="field full"><label>Address <i>*</i></label><input id="address" placeholder="e.g. 123 Park Street, Block A"></div>
+          <div class="field"><label>Zip Code <i>*</i></label><input id="zip" placeholder="e.g. 700016"></div>
+          <div class="field"><label>City <i>*</i></label><input id="city" placeholder="e.g. Kolkata"></div>
+          <div class="field full"><label>Phone Number <i>*</i></label><input id="phone" type="tel" placeholder="e.g. +91 98765 43210"></div>
+          <div class="field full"><label>Email Address <span>(Optional)</span></label><input id="email" type="email" placeholder="e.g. hello@yourrestaurant.com"></div>
+        </div>
+      </div>
+
+      <div class="uploads">
+        <div class="section-title"><span class="icon">▤</span>Upload Your Menu (2D Images) <i style="color:var(--orange)">*</i></div>
+        <label class="drop" for="menuFiles"><div class="cloud">☁</div><strong>Drag &amp; drop your menu images here</strong><small>or click to select files<br>JPG, PNG, PDF · No limit — 3, 10, 20 or more pages</small></label>
+        <input id="menuFiles" type="file" accept=".jpg,.jpeg,.png,.pdf" multiple>
+        <div id="menuThumbs" class="thumbs"></div>
+
+        <div class="section-title dishes-title"><span class="icon">◇</span>Select Your 3D Highlight Dishes (Max 5) <i style="color:var(--orange)">*</i></div>
+        <div class="dish-slots">
+          <div class="slot-wrap"><div class="slot" data-input="dish1">+</div>Dish 1<input id="dish1" class="dishfile" type="file" accept="image/*"></div>
+          <div class="slot-wrap"><div class="slot" data-input="dish2">+</div>Dish 2<input id="dish2" class="dishfile" type="file" accept="image/*"></div>
+          <div class="slot-wrap"><div class="slot" data-input="dish3">+</div>Dish 3<input id="dish3" class="dishfile" type="file" accept="image/*"></div>
+          <div class="slot-wrap"><div class="slot" data-input="dish4">+</div>Dish 4<input id="dish4" class="dishfile" type="file" accept="image/*"></div>
+          <div class="slot-wrap"><div class="slot" data-input="dish5">+</div>Dish 5<input id="dish5" class="dishfile" type="file" accept="image/*"></div>
+        </div>
+        <div class="help">Upload up to 5 high-quality dish images. We'll create the 3D models and add them within 48 hours.</div>
+      </div>
+
+      <aside class="live-preview">
+        <div class="preview-head"><div><span class="preview-kicker">PLATE³ LIVE PREVIEW</span><h3>Your 3D Dish</h3></div><span class="status"><i></i> READY</span></div>
+        <div class="preview-stage">
+          <model-viewer id="formModel" src="tandoori_mix_grill.glb" alt="3D dish preview" camera-controls auto-rotate shadow-intensity="1" exposure="1.05" camera-orbit="0deg 70deg 2.8m" field-of-view="32deg"></model-viewer>
+          <div class="preview-label"><span>◇</span><div><strong>Signature Dish</strong><small>Interactive 3D / AR</small></div></div>
+          <div class="preview-controls"><button onclick="toggleFormRotate()">⟳</button><button onclick="formZoom()">⌕</button></div>
+        </div>
+        <div class="preview-caption"><strong>See before you order.</strong><small>Your selected dish will become your 3D highlight.</small></div>
+      </aside>
+    </div>
+
+    <div class="workflow">
+      <div class="workflow-head"><div><span class="workflow-kicker">THE PLATE³ PROCESS</span><h3>Simple for you. Powerful for your customers.</h3></div><span class="workflow-tag">48-HOUR 3D SETUP</span></div>
+      <div class="steps">
+        <div class="step"><div class="num">01</div><div><strong>Upload your content</strong><small>Restaurant details, menu pages and up to 5 dish photos.</small></div></div>
+        <div class="line"></div>
+        <div class="step"><div class="num">02</div><div><strong>We create the experience</strong><small>Our team prepares your interactive 3D dish highlights.</small></div></div>
+        <div class="line"></div>
+        <div class="step"><div class="num">03</div><div><strong>Go live</strong><small>Receive your unique restaurant menu link and share it.</small></div></div>
+      </div>
+      <div class="workflow-foot"><strong>✦ No technical knowledge required.</strong> Just upload your content — PLATE³ handles the experience.</div>
+    </div>
+
+    <div class="generate-wrap"><button class="generate" id="generate">Generate My Menu &nbsp;→</button><div class="instant">Your unique restaurant menu link will be created instantly.</div></div>
+  </div>
+</section>
+
+<section class="benefits" id="benefits">
+  <div class="benefit-card">
+    <div class="benefit"><div class="bi">ϟ</div><strong>Quick Setup</strong><small>Get started in minutes.</small></div>
+    <div class="benefit"><div class="bi">▧</div><strong>Flexible Upload</strong><small>Upload 3 to 50+ menu pages.</small></div>
+    <div class="benefit"><div class="bi">↗</div><strong>Unique Menu Link</strong><small>Get your own restaurant link.</small></div>
+    <div class="benefit"><div class="bi">♧</div><strong>Attract More Customers</strong><small>Modern menus drive more orders.</small></div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="footer-inner"><div class="footer-brand"><img src="logo.png" class="footer-logo" alt="PLATE³"><span class="footer-tag">Digital Menus for Modern Restaurants</span></div><div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="mailto:hello@plate3.com">Contact</a><a href="sample-menu.html">Sample Menu</a></div></div>
+  <div class="copyright"><span>© 2025 PLATE³. All rights reserved.</span><span>See Before You Order.</span></div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const toast=document.getElementById('toast');
+function showToast(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>toast.classList.remove('show'),2600)}
+
+function toggleHeroRotate(){const m=document.getElementById('heroModel');m.autoRotate=!m.autoRotate}
+function heroZoom(){document.getElementById('heroModel').cameraOrbit='0deg 70deg 2.0m'}
+function heroAR(){const m=document.getElementById('heroModel');if(m.canActivateAR)m.activateAR();else showToast('AR is available on supported mobile devices.')}
+function toggleFormRotate(){const m=document.getElementById('formModel');m.autoRotate=!m.autoRotate}
+function formZoom(){document.getElementById('formModel').cameraOrbit='0deg 70deg 2.0m'}
+
+const menuFiles=document.getElementById('menuFiles');
+const menuThumbs=document.getElementById('menuThumbs');
+menuFiles.addEventListener('change',()=>{
+  menuThumbs.innerHTML='';
+  [...menuFiles.files].forEach(file=>{
+    if(file.type==='application/pdf'){
+      const d=document.createElement('div');d.className='thumb';d.textContent='PDF';menuThumbs.appendChild(d);return;
+    }
+    const d=document.createElement('div');d.className='thumb';
+    const img=document.createElement('img');img.src=URL.createObjectURL(file);d.appendChild(img);menuThumbs.appendChild(d);
+  });
+});
+
+document.querySelectorAll('.slot').forEach(slot=>{
+  slot.addEventListener('click',()=>document.getElementById(slot.dataset.input).click());
+});
+document.querySelectorAll('.dishfile').forEach(input=>{
+  input.addEventListener('change',()=>{
+    if(!input.files.length)return;
+    const slot=document.querySelector(`.slot[data-input="${input.id}"]`);
+    const img=document.createElement('img');img.src=URL.createObjectURL(input.files[0]);
+    slot.innerHTML='';slot.appendChild(img);
+  });
+});
+
+const SUPABASE_URL='https://xsfpupefueccnhcytdls.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_ayAn7Nw7ROmU99h-HR_Ldw_TB8LIfFq';
+const sb=(SUPABASE_URL.startsWith('https://')&&!SUPABASE_ANON_KEY.includes('PASTE_'))?window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
+function slugify(v){return v.toLowerCase().trim().replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,70)}
+async function uploadAsset(path,file){
+ const {error}=await sb.storage.from('restaurant-assets').upload(path,file,{upsert:false,cacheControl:'31536000'});
+ if(error) throw error;
+ return sb.storage.from('restaurant-assets').getPublicUrl(path).data.publicUrl;
+}
+document.getElementById('generate').addEventListener('click',async()=>{
+ for(const id of ['restaurantName','address','zip','city','phone']){
+   if(!document.getElementById(id).value.trim()){document.getElementById(id).focus();showToast('Please complete all required restaurant details.');return}
+ }
+ if(!menuFiles.files.length){showToast('Please upload at least one 2D menu page.');return}
+ const dishInputs=[...document.querySelectorAll('.dishfile')];
+ if(!dishInputs.some(x=>x.files.length)){showToast('Please select at least one 3D highlight dish photo.');return}
+ if(!sb){showToast('Connect Supabase first — the link cannot be created without a database.');return}
+ const btn=document.getElementById('generate');btn.disabled=true;btn.textContent='Creating Your Menu…';
+ try{
+   const name=document.getElementById('restaurantName').value.trim();
+   const slug=slugify(name)||('restaurant-'+Date.now());
+   const {data:exists}=await sb.from('restaurants').select('id').eq('slug',slug).maybeSingle();
+   if(exists) throw new Error('This restaurant name already has a menu link.');
+   const {data:r,error:e}=await sb.from('restaurants').insert({
+     restaurant_name:name,slug,address:document.getElementById('address').value.trim(),
+     zip_code:document.getElementById('zip').value.trim(),city:document.getElementById('city').value.trim(),
+     phone:document.getElementById('phone').value.trim(),email:document.getElementById('email').value.trim()||null,
+     status:'processing_3d',menu_files:[],dish_photos:[],model_urls:[]
+   }).select().single();
+   if(e) throw e;
+   const menus=[];
+   for(let i=0;i<menuFiles.files.length;i++){
+     const f=menuFiles.files[i],safe=f.name.replace(/[^a-zA-Z0-9._-]/g,'-');
+     menus.push(await uploadAsset(`${slug}/menu/${String(i+1).padStart(3,'0')}-${safe}`,f));
+   }
+   const dishes=[];
+   for(let i=0;i<dishInputs.length;i++) if(dishInputs[i].files.length){
+     const f=dishInputs[i].files[0],safe=f.name.replace(/[^a-zA-Z0-9._-]/g,'-');
+     dishes.push({slot:i+1,url:await uploadAsset(`${slug}/dishes/dish-${i+1}-${safe}`,f)});
+   }
+   const {error:ue}=await sb.from('restaurants').update({menu_files:menus,dish_photos:dishes}).eq('id',r.id);
+   if(ue) throw ue;
+   showToast('Menu created! Opening your restaurant link…');
+   setTimeout(()=>location.href=`${location.origin}/${slug}`,700);
+ }catch(err){
+   console.error(err);showToast(err.message||'Could not create the menu.');
+   btn.disabled=false;btn.textContent='Generate My Menu  →';
+ }
+});
+</script>
+</body>
+</html>

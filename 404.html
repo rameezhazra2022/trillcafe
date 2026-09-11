@@ -1,0 +1,4 @@
+<!doctype html><html><head><meta charset="utf-8"><script>
+if(location.pathname==='/'||location.pathname==='/index.html') location.replace('/');
+else fetch('/restaurant.html').then(r=>r.text()).then(t=>{document.open();document.write(t);document.close()}).catch(()=>location.replace('/'));
+</script></head><body></body></html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PLATE³ — Digital Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--orange:#ff6800;--cream:#fffaf2;--ink:#111722;--muted:#707784;--line:#ddd2c5;--black:#090909}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,Arial,sans-serif}
+header{height:68px;background:#080808;color:#fff;display:flex;align-items:center;padding:0 22px;position:sticky;top:0;z-index:5}
+header img{height:46px}.head{max-width:1100px;width:100%;margin:auto;display:flex;align-items:center;justify-content:space-between}
+.badge{font-size:10px;letter-spacing:2px;color:#ff9a3d;font-weight:900}
+main{max-width:1100px;margin:auto;padding:34px 18px 55px}
+.hero{background:linear-gradient(135deg,#17120f,#2b1509);color:white;border-radius:22px;padding:32px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:280px;height:280px;border:1px solid #ff680044;border-radius:50%;right:-100px;bottom:-180px;box-shadow:0 0 0 35px #ff680012,0 0 0 70px #ff680008}
+h1{font-size:clamp(32px,6vw,58px);letter-spacing:-2.5px;margin:6px 0 8px}.meta{color:#d5cec7;font-size:12px;line-height:1.6;max-width:700px}.meta b{color:#fff}
+.section{margin-top:28px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:12px}.section-head h2{font-size:22px;margin:0;letter-spacing:-.7px}.section-head p{font-size:10px;color:var(--muted);margin:0}
+.dishes{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.dish{background:#fff;border:1px solid var(--line);border-radius:15px;overflow:hidden;box-shadow:0 8px 25px #17120f0c}.dish img{width:100%;aspect-ratio:1/1;object-fit:cover}.dish .pad{padding:10px}.dish strong{font-size:10px}.dish small{display:block;color:var(--muted);font-size:8px;margin-top:4px}
+.processing{background:#17120f;color:#fff;border-radius:17px;padding:20px;border:1px solid #3b2b21}.processing b{font-size:12px;color:#ff9a3d}.processing p{font-size:10px;line-height:1.55;color:#cbc3bb;margin:7px 0 0}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.menu-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;overflow:hidden}.menu-card img{width:100%;height:auto;border-radius:10px}.menu-card embed{width:100%;height:700px;border:0;border-radius:10px}
+.model-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.model-card{background:#090909;border-radius:16px;overflow:hidden;color:#fff;border:1px solid #30251f}.model-card model-viewer{width:100%;height:300px;background:radial-gradient(circle at 50% 40%,#ff680055,transparent 35%),#100b08}.model-card .pad{padding:10px}.model-card strong{font-size:10px}
+footer{background:#090909;color:#aaa;text-align:center;padding:22px;font-size:9px}footer b{color:#fff}
+.state{text-align:center;padding:100px 20px}.state h1{font-size:40px}.state p{color:var(--muted);font-size:12px}.back{display:inline-block;margin-top:12px;background:var(--orange);color:#111;padding:11px 18px;border-radius:9px;font-weight:900;font-size:10px}
+@media(max-width:700px){header{height:58px;padding:0 15px}header img{height:40px}main{padding:20px 12px 40px}.hero{padding:23px 18px;border-radius:17px}.dishes{grid-template-columns:repeat(2,1fr)}.menu-grid,.model-grid{grid-template-columns:1fr}.menu-card embed{height:560px}.section-head{display:block}.section-head p{margin-top:4px}}
+</style>
+</head>
+<body>
+<header><div class="head"><img src="/logo.png" alt="PLATE³"><span class="badge">DIGITAL MENU</span></div></header>
+<main id="app"><div class="state"><h1>Loading menu…</h1><p>Please wait.</p></div></main>
+<footer>Powered by <b>PLATE³</b> · See Before You Order.</footer>
+
+<script>
+const app=document.getElementById('app');
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function getSlug(){return location.pathname.split('/').filter(Boolean).pop() || ''}
+function fileBlock(item){
+  const name=esc(item.name||'Menu page');
+  const url=item.url||'';
+  if(/\.pdf(\?|$)/i.test(url)) return `<div class="menu-card"><embed src="${url}" type="application/pdf"><div style="padding:8px;font-size:9px;color:#707784">${name}</div></div>`;
+  return `<div class="menu-card"><img src="${url}" alt="${name}" loading="lazy"><div style="padding:8px;font-size:9px;color:#707784">${name}</div></div>`;
+}
+async function load(){
+  const slug=getSlug();
+  if(!slug){location.href='/';return}
+  if(!window.PLATE3_CONFIG || window.PLATE3_CONFIG.SUPABASE_URL.includes('YOUR_')){
+    app.innerHTML='<div class="state"><h1>Setup required</h1><p>Connect PLATE³ to Supabase in config.js.</p></div>';return;
+  }
+  const sb=window.supabase.createClient(window.PLATE3_CONFIG.SUPABASE_URL,window.PLATE3_CONFIG.SUPABASE_ANON_KEY);
+  const {data:r,error}=await sb.from('restaurant_submissions').select('*').eq('slug',slug).maybeSingle();
+  if(error){console.error(error);app.innerHTML='<div class="state"><h1>Could not load menu</h1><p>Please try again.</p><a class="back" href="/">Go to PLATE³</a></div>';return}
+  if(!r){app.innerHTML=`<div class="state"><h1>Menu not found</h1><p>The restaurant page <b>${esc(slug)}</b> does not exist yet.</p><a class="back" href="/">Go to PLATE³</a></div>`;return}
+  const menu=Array.isArray(r.menu_files)?r.menu_files:[];
+  const dishes=Array.isArray(r.dish_photos)?r.dish_photos:[];
+  const models=Array.isArray(r.three_d_models)?r.three_d_models:[];
+  app.innerHTML=`
+    <section class="hero">
+      <div class="badge">PLATE³ · DIGITAL MENU</div>
+      <h1>${esc(r.restaurant_name)}</h1>
+      <div class="meta"><b>${esc(r.address)}</b><br>${esc(r.city)} ${esc(r.zip_code)} · ${esc(r.phone)}${r.email?' · '+esc(r.email):''}</div>
+    </section>
+    ${dishes.length?`<section class="section"><div class="section-head"><h2>Signature Dishes</h2><p>Selected highlights</p></div><div class="dishes">${dishes.map((d,i)=>`<div class="dish"><img src="${d.url}" alt="${esc(d.name||'Signature dish '+(i+1))}" loading="lazy"><div class="pad"><strong>${esc(d.name||'Signature Dish '+(i+1))}</strong><small>3D highlight${models[i]?' · Ready':''}</small></div></div>`).join('')}</div></section>`:''}
+    ${r.status!=='ready'?`<section class="section"><div class="processing"><b>3D dishes are being prepared</b><p>Your interactive 3D dishes will be added within 48 hours. Your complete 2D menu is already available below.</p></div></section>`:''}
+    ${models.length?`<section class="section"><div class="section-head"><h2>Explore in 3D</h2><p>Interactive signature dishes</p></div><div class="model-grid">${models.map(m=>`<div class="model-card"><model-viewer src="${m.url}" camera-controls auto-rotate ar shadow-intensity="1"></model-viewer><div class="pad"><strong>${esc(m.name||'Signature Dish')}</strong></div></div>`).join('')}</div></section>`:''}
+    <section class="section"><div class="section-head"><h2>Full Menu</h2><p>${menu.length} page${menu.length===1?'':'s'}</p></div><div class="menu-grid">${menu.map(fileBlock).join('')}</div></section>
+  `;
+}
+load();
+</script>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+</body>
+</html>

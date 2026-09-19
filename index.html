@@ -121,17 +121,17 @@ input{height:44px;padding:0 13px;font-size:13px}
 
 <style id="final-logo-sizing">
 .brand-logo{
-  width:120px;
-  height:72px;
+  width:64px;
+  height:64px;
   object-fit:contain;
   object-position:center;
   display:block;
 }
-header .brand-logo{width:108px;height:72px;object-fit:contain;object-position:center;background:transparent;}
-footer .brand-logo{width:108px;height:72px;object-fit:contain;object-position:center;background:transparent;}
+header .brand-logo{width:64px;height:64px;object-fit:contain;object-position:center;background:transparent;}
+footer .brand-logo{width:64px;height:64px;object-fit:contain;object-position:center;background:transparent;}
 @media (max-width: 700px){
-  header .brand-logo{width:92px;height:62px;}
-  footer .brand-logo{width:92px;height:62px;}
+  header .brand-logo{width:54px;height:54px;}
+  footer .brand-logo{width:54px;height:54px;}
 }
 </style>
 
@@ -204,7 +204,7 @@ select:disabled,input:disabled{background:#eee8df;color:#8a8a8a;cursor:not-allow
 <body id="top">
 
 <header class="nav">
-  <img src="logo.png?v=20260914-2" alt="PLATE³" class="brand-logo">
+  <img src="logo.png?v=20260919-1" alt="PLATE³" class="brand-logo">
   <nav class="navlinks" aria-label="Main navigation">
    <a class="nav-feature" href="#examples"><div class="nav-feature-icon">◇</div><b>3D Dish Highlights</b><p>Showcase your signature dishes.</p></a>
    <a class="nav-feature" href="#examples"><div class="nav-feature-icon">▣</div><b>AR Experience</b><p>Let customers see dishes in their space.</p></a>
@@ -212,7 +212,6 @@ select:disabled,input:disabled{background:#eee8df;color:#8a8a8a;cursor:not-allow
   </nav>
   <div class="nav-extra">
    <a href="#how">How It Works</a>
-   <a href="sample-menu.html">Sample Digital Menu</a>
    <a href="#contact">Contact</a>
     <form class="nav-search" onsubmit="return searchRestaurant(event)" role="search">
       <div class="nav-search-wrap">
@@ -230,7 +229,7 @@ select:disabled,input:disabled{background:#eee8df;color:#8a8a8a;cursor:not-allow
    <div class="eyebrow">BRING YOUR DISHES TO LIFE</div>
    <h1>Your Menu.<br>Now with a <span>3D</span><br>Highlight.</h1>
    <p>Create your digital restaurant menu in minutes. Showcase your top 5 dishes in interactive 3D &amp; AR, while keeping your complete menu simple with 2D images.</p>
-   <div class="actions"><button class="primary" onclick="document.getElementById('create').scrollIntoView()">Create Your Menu →</button><button class="secondary" onclick="showToast('Sample menu demo coming soon.')">▶ &nbsp; View Sample Menu</button></div>
+   <div class="actions"><button class="primary" onclick="document.getElementById('create').scrollIntoView()">Create Your Menu →</button><button class="secondary" type="button" onclick="window.location.href='sample-menu.html'">▶ &nbsp; View Sample Menu</button></div>
   </div>
   <div class="hero-visual">
    <div class="hero-note">Real Food.<br>Real Experience.</div>
@@ -320,13 +319,13 @@ select:disabled,input:disabled{background:#eee8df;color:#8a8a8a;cursor:not-allow
   <p>Let's bring your restaurant menu to life with PLATE³.</p>
   <div class="contact-row">
    <a class="contact-card" href="tel:7044180341"><span class="contact-icon">☎</span><span><small>CALL US</small><b>7044180341</b></span></a>
-   <a class="contact-card" href="mailto:cube3mailbox@gmail.com"><span class="contact-icon">✉</span><span><small>EMAIL US</small><b>cube3mailbox@gmail.com</b></span></a>
+   <a class="contact-card" href="mailto:platecubemailbox@gmail.com"><span class="contact-icon">✉</span><span><small>EMAIL US</small><b>platecubemailbox@gmail.com</b></span></a>
   </div>
   <button onclick="document.getElementById('create').scrollIntoView()">👤 &nbsp; Get Started Now →</button>
  </div>
 </section>
 
-<footer><div class="footbrand"><img src="logo.png?v=20260914-2" alt="PLATE³" class="brand-logo"></div><div>Digital Menus for Modern Restaurants</div><div><a href="#">Privacy</a><a href="#">Terms</a><a href="#contact">Contact</a></div></footer>
+<footer><div class="footbrand"><img src="logo.png?v=20260919-1" alt="PLATE³" class="brand-logo"></div><div>Digital Menus for Modern Restaurants</div><div><a href="#">Privacy</a><a href="#">Terms</a><a href="#contact">Contact</a></div></footer>
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -731,7 +730,7 @@ async function loadRestaurantRoute(){
 
     const dishesHtml=readyModels.length?`<div class="rr-dishes">${readyModels.map(x=>`<article class="rr-dish"><model-viewer src="${rrEscape(x.url)}" camera-controls auto-rotate shadow-intensity="1" exposure="1" ar></model-viewer><h3>${rrEscape(x.name)}</h3><small>Interactive 3D highlight</small></article>`).join('')}</div>`:`<div class="rr-status">✦ <strong>3D dishes are being prepared.</strong><br>Your interactive 3D dishes will be added within 48 hours. Your 2D menu is already available below.</div>`;
 
-    app.innerHTML=`<div class="rr-top"><div class="rr-brand"><img src="logo.png?v=20260914-2" alt="PLATE³"><span class="rr-badge">DIGITAL MENU</span></div><a class="rr-home" href="/">PLATE³ Home</a></div><div class="rr-wrap"><section class="rr-hero"><div class="rr-kicker">SEE BEFORE YOU ORDER</div><h1>${rrEscape(r.restaurant_name||'Restaurant')}</h1><div class="rr-meta">${rrEscape(address||'')}</div><div class="rr-contact">${phone}${email}</div></section><section class="rr-section"><div class="rr-section-head"><div><h2>Signature Dishes</h2><p>Explore the restaurant's interactive highlights.</p></div></div>${dishesHtml}</section><section class="rr-section"><div class="rr-section-head"><div><h2>Full Menu</h2><p>Browse the complete menu exactly as provided by the restaurant.</p></div></div><div class="rr-menu">${menuHtml}</div></section><div class="rr-footer">Powered by PLATE³ · See Before You Order.</div></div>`;
+    app.innerHTML=`<div class="rr-top"><div class="rr-brand"><img src="logo.png?v=20260919-1" alt="PLATE³"><span class="rr-badge">DIGITAL MENU</span></div><a class="rr-home" href="/">PLATE³ Home</a></div><div class="rr-wrap"><section class="rr-hero"><div class="rr-kicker">SEE BEFORE YOU ORDER</div><h1>${rrEscape(r.restaurant_name||'Restaurant')}</h1><div class="rr-meta">${rrEscape(address||'')}</div><div class="rr-contact">${phone}${email}</div></section><section class="rr-section"><div class="rr-section-head"><div><h2>Signature Dishes</h2><p>Explore the restaurant's interactive highlights.</p></div></div>${dishesHtml}</section><section class="rr-section"><div class="rr-section-head"><div><h2>Full Menu</h2><p>Browse the complete menu exactly as provided by the restaurant.</p></div></div><div class="rr-menu">${menuHtml}</div></section><div class="rr-footer">Powered by PLATE³ · See Before You Order.</div></div>`;
   }catch(err){
     console.error('PLATE³ restaurant route error:',err);
     app.innerHTML=`<div class="rr-error"><div class="rr-error-card"><div class="rr-kicker">PLATE³ DIGITAL MENU</div><h1>Menu unavailable</h1><p>We couldn't load this restaurant right now. Please try again in a moment.</p><a class="rr-btn" href="/">Go to PLATE³</a></div></div>`;
